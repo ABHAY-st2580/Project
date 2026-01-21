@@ -39,27 +39,27 @@ Create Table _2_2_(
 
 Create Table Customer_debt(
 	Cust_id INT auto_increment Primary Key,
-    Customer_name varchar(20),
-    Customer_phone_number INT(10),
+    Customer_name varchar(20) DEFAULT NULL,
     Customer_Address varchar(250),
+    Customer_phone_number INT(10),
     Amount_Pending INT
 );
 CREATE TABLE Sale (
     Sale_id INT AUTO_INCREMENT PRIMARY KEY,
-    Cust_id INT,
-    Date_ TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Date_ TIMESTAMP DEFAULT 
+    CURRENT_TIMESTAMP,
+    Customer_phone_number INT(10),
     Total_Amount INT,
     Fare_Amount INT,
     Amount_Paid INT,
     Amount_Pending INT,
-    FOREIGN KEY (Cust_id) REFERENCES Customer_debt(Cust_id)
 );
-CREATE TABLE Sale_Items (
-    Item_id INT AUTO_INCREMENT PRIMARY KEY,
-    Sale_id INT,
-    Tile_Size VARCHAR(20),
-    Tile_Type VARCHAR(10),
-    Quantity INT,
-    Rate INT,
-    FOREIGN KEY (Sale_id) REFERENCES Sale(Sale_id)
-);
+-- CREATE TABLE Sale_Items (
+--     Tile_number INT Primary Key,
+--     Sale_id INT,
+--     Tile_Size VARCHAR(20),
+--     Tile_Type VARCHAR(10),
+--     Quantity INT,
+--     Rate INT,
+--     FOREIGN KEY (Sale_id) REFERENCES Sale(Sale_id)
+-- );
