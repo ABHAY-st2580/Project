@@ -7,7 +7,8 @@ def get_connection():
             host="localhost",
             user="root",
             password="abhayst2580",
-            database="Marble_Tiles"
+            database="Marble_Tiles",
+            auth_plugin = "mysql_native_password"
         )
 
         if conn.is_connected():
@@ -16,3 +17,5 @@ def get_connection():
     except Error as e:
         print("Error while connecting to MySQL:", e)
         return None
+
+get_connection()
