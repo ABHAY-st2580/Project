@@ -21,6 +21,7 @@ class _12_18_:
     def remove_design(self, design_number):
         query = 'drop from _12_18_ where Tile_number = %s'
         self.__cursor.execute(query, (design_number,))
+        self.__conn.commit()
 
 
 class _2_4_:
@@ -42,6 +43,7 @@ class _2_4_:
     def remove_design(self, design_name):
         query = 'drop from _2_4_ where Tile_name = %s'
         self.__cursor.execute(query, (design_name,))
+        self.__conn.commit()
 
 
 class _2_2_:
@@ -63,6 +65,7 @@ class _2_2_:
     def remove_design(self, design_name):
         query = 'drop from _2_2_ where Tile_name = %s'
         self.__cursor.execute(query, (design_name,))
+        self.__conn.commit()
 
 
 class _1_2_:
@@ -84,6 +87,7 @@ class _1_2_:
     def remove_design(self, design_number):
         query = 'drop from _1_2_ where Tile_number = %s'
         self.__cursor.execute(query, (design_number,))
+        self.__conn.commit()
 
 
 class _16_16_:
@@ -105,6 +109,7 @@ class _16_16_:
     def remove_design(self, design_number):
         query = 'drop from _16_16_ where Tile_number = %s'
         self.__cursor.execute(query, (design_number,))
+        self.__conn.commit()
 
 
 class _20_20_:
@@ -126,3 +131,4 @@ class _20_20_:
     def remove_design(self, design_number):
         query = 'drop from _20_20_ where Tile_number = %s'
         self.__cursor.execute(query, (design_number,))
+        self.__conn.commit()

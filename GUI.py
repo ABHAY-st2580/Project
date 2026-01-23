@@ -4,84 +4,218 @@ from Stock import _2_2_
 from Stock import _2_4_
 from Stock import _16_16_
 from Stock import _20_20_
-import Sale
-import Debt
+from Sale import Sale
+from Sale import Sale_Items
+from Debt import Debt
 from Database import get_connection
 
 import tkinter as tk
 from tkinter import ttk, messagebox
 
-
+frame = None
+tree = None
+Tile_number_entry, hl_entry, l_entry, d_entry, f_entry, Tile_name_entry, entry, records = None, None, None,None,None,None,None, None
 _12_18_ = _12_18_()
 _1_2_ = _1_2_()
 _2_2_ = _2_2_()
 _2_4_ = _2_4_()
 _16_16_ = _16_16_()
 _20_20_ = _20_20_()
-
+update_items = Sale_Items()
 
 root = tk.Tk()
 root.title("STOCK_MANAGER_APP")
 root.geometry("600x400")
+def update():
+    global frame, Tile_name_entry, entry, hl_entry,l_entry,d_entry,f_entry,Tile_number_entry, records
+    value = combo.get()
+    if (value == '12X18'):
+        update_items.update_in_stock(Tile_number= Tile_number_entry.get(), Tile_size= 1218, hl_qty = hl_entry.get(), l_qty = l_entry.get(),
+                                     f_qty = f_entry.get(), d_qty = d_entry.get())
+        records = _12_18_.check()
+    elif (value == '1X2'):
+        update_items.update_in_stock(Tile_number= Tile_number_entry.get(), Tile_size= 12, hl_qty = hl_entry.get(), l_qty = l_entry.get(),
+                                     f_qty = f_entry.get(), d_qty = d_entry.get())
+        records = _1_2_.check()
+    elif(value == '2X2'):
+        update_items.update_in_stock(Tile_name = Tile_name_entry.get(), Tile_size=22, qty = entry.get())
+        records = _2_2_.check()
+    elif (value == '2X4'):
+        update_items.update_in_stock(Tile_name=Tile_name_entry.get(), Tile_size=24, qty=entry.get())
+        records = _2_4_.check()
+    elif (value == '16X16'):
+        update_items.update_in_stock(Tile_name=Tile_name_entry.get(), Tile_size=1616, qty=entry.get())
+        records = _16_16_.check()
+    elif (value == '20X20'):
+        update_items.update_in_stock(Tile_name=Tile_name_entry.get(), Tile_size=2020, qty=entry.get())
+        records = _20_20_.check()
 
 def Select_tile_type():
     value = combo.get()
+    global frame, tree
+    if (frame is not None) and (tree is not None):
+        frame.destroy()
+        tree.destroy()
+
     if(value == '12X18'):
         _1218()
+    elif(value == '1X2'):
+        _12()
+    elif (value == '2X2'):
+        _22()
+    elif (value == '2X4'):
+        _24()
+    elif (value == '16X16'):
+        _1616()
+    elif (value == '20X20'):
+        _2020()
 def data(cols):
-    tree = ttk.Treeview(root, columns=cols, show="headings")
+    global tree
+    style = ttk.Style()
+    style.theme_use('default')
+    style.configure('Treeview', background = '#D3D3D3', foreground = 'black', rowheight = 25, fieldbackground = '#D3D3D3')
+    style.map('Treeview', background = [('selected', '#347083')])
+    tree = tk.Frame(root)
+    tree.pack(pady = 10, fill = 'x')
+    tree_scroll = tk.Scrollbar(tree)
+    tree_scroll.pack(side = 'right', fill = 'y')
 
+    tree_ = ttk.Treeview(tree, columns=cols, show="headings", yscrollcommand=tree_scroll.set, selectmode = 'extended')
     for c in cols:
-        tree.heading(c, text=c)
-        tree.column(c, width=150, anchor="center")
+        tree_.heading(c, text=c)
+        tree_.column(c, width=150, anchor="center")
 
-    tree.pack(fill="both", expand=True, padx=10, pady=2)
+    tree_.pack(fill="both", expand=True, padx=10, pady=2)
 
 
 def _1218():
-    frame_1218 = tk.LabelFrame(root, text='12x18')
-    frame_1218.pack(fill='x', padx=20, expand = True)
-    number_label = tk.Label(frame_1218, text='TILE NUMBER')
+    global frame, Tile_number_entry, hl_entry,l_entry,d_entry,f_entry
+    frame = tk.LabelFrame(root, text='12x18')
+    frame.pack(fill='x', padx=20, expand = True)
+    number_label = tk.Label(frame, text='TILE NUMBER')
     number_label.grid(row=1, column=0, padx=10, pady=10)
-    Tile_number_entry = tk.Entry(frame_1218)
+    Tile_number_entry = tk.Entry(frame)
     Tile_number_entry.grid(row=1, column=1, padx=10, pady=10)
 
-    hl_label = tk.Label(frame_1218, text='HL')
+    hl_label = tk.Label(frame, text='HL')
     hl_label.grid(row=1, column=2, padx=10, pady=10)
-    hl_entry = tk.Entry(frame_1218)
+    hl_entry = tk.Entry(frame)
     hl_entry.grid(row=1, column=3, padx=10, pady=10)
 
-    l_label = tk.Label(frame_1218, text='L')
+    l_label = tk.Label(frame, text='L')
     l_label.grid(row=1, column=4, padx=10, pady=10)
-    l_entry = tk.Entry(frame_1218)
+    l_entry = tk.Entry(frame)
     l_entry.grid(row=1, column=5, padx=10, pady=10)
 
-    d_label = tk.Label(frame_1218, text='D')
+    d_label = tk.Label(frame, text='D')
     d_label.grid(row=1, column=6, padx=10, pady=10)
-    d_entry = tk.Entry(frame_1218)
+    d_entry = tk.Entry(frame)
     d_entry.grid(row=1, column=7, padx=10, pady=10)
 
-    f_label = tk.Label(frame_1218, text='F')
+    f_label = tk.Label(frame, text='F')
     f_label.grid(row=1, column=8, padx=10, pady=10)
-    f_entry = tk.Entry(frame_1218)
+    f_entry = tk.Entry(frame)
     f_entry.grid(row=1, column=9, padx=10, pady=10)
+
+    button = tk.Button(frame, text="UPDATE", command = update)
+    button.grid(row=2, columns=10, padx=30, pady=10)
     cols = ['Tile_Number','HL', 'L', 'D', 'F']
     data(cols)
 
 def _12():
-    pass
+    global frame, Tile_number_entry, hl_entry,l_entry,d_entry,f_entry
+    frame = tk.LabelFrame(root, text='1X2')
+    frame.pack(fill='x', padx=20, expand=True)
+    number_label = tk.Label(frame, text='TILE NUMBER')
+    number_label.grid(row=1, column=0, padx=10, pady=10)
+    Tile_number_entry = tk.Entry(frame)
+    Tile_number_entry.grid(row=1, column=1, padx=10, pady=10)
+
+    hl_label = tk.Label(frame, text='HL')
+    hl_label.grid(row=1, column=2, padx=10, pady=10)
+    hl_entry = tk.Entry(frame)
+    hl_entry.grid(row=1, column=3, padx=10, pady=10)
+
+    l_label = tk.Label(frame, text='L')
+    l_label.grid(row=1, column=4, padx=10, pady=10)
+    l_entry = tk.Entry(frame)
+    l_entry.grid(row=1, column=5, padx=10, pady=10)
+
+    d_label = tk.Label(frame, text='D')
+    d_label.grid(row=1, column=6, padx=10, pady=10)
+    d_entry = tk.Entry(frame)
+    d_entry.grid(row=1, column=7, padx=10, pady=10)
+
+    f_label = tk.Label(frame, text='F')
+    f_label.grid(row=1, column=8, padx=10, pady=10)
+    f_entry = tk.Entry(frame)
+    f_entry.grid(row=1, column=9, padx=10, pady=10)
+    cols = ['TILE_NUMBER', 'HL', 'L', 'D', 'F']
+    data(cols)
 
 def _22():
-    pass
+    global frame, Tile_name_entry, entry
+    frame = tk.LabelFrame(root, text='2X2')
+    frame.pack(fill='x', padx=20, expand=True)
+    number_label = tk.Label(frame, text='TILE NAME')
+    number_label.grid(row=1, column=0, padx=10, pady=10)
+    Tile_name_entry = tk.Entry(frame)
+    Tile_name_entry.grid(row=1, column=1, padx=10, pady=10)
+
+    label = tk.Label(frame, text='BOXES(QUANTITY)')
+    label.grid(row=1, column=2, padx=10, pady=10)
+    entry = tk.Entry(frame)
+    entry.grid(row=1, column=3, padx=10, pady=10)
+    cols = ['TILE_NAME', 'BOXES(QTY)']
+    data(cols)
 
 def _24():
-    pass
+    global frame, Tile_name_entry, entry
+    frame = tk.LabelFrame(root, text='2X4')
+    frame.pack(fill='x', padx=20, expand=True)
+    number_label = tk.Label(frame, text='TILE NAME')
+    number_label.grid(row=1, column=0, padx=10, pady=10)
+    Tile_name_entry = tk.Entry(frame)
+    Tile_name_entry.grid(row=1, column=1, padx=10, pady=10)
+
+    label = tk.Label(frame, text='BOXES(QUANTITY)')
+    label.grid(row=1, column=2, padx=10, pady=10)
+    entry = tk.Entry(frame)
+    entry.grid(row=1, column=3, padx=10, pady=10)
+    cols = ['TILE_NAME', 'BOXES(QTY)']
+    data(cols)
 
 def _1616():
-    pass
+    global frame, Tile_name_entry, entry
+    frame = tk.LabelFrame(root, text='16X16')
+    frame.pack(fill='x', padx=20, expand=True)
+    number_label = tk.Label(frame, text='TILE NAME')
+    number_label.grid(row=1, column=0, padx=10, pady=10)
+    Tile_name_entry = tk.Entry(frame)
+    Tile_name_entry.grid(row=1, column=1, padx=10, pady=10)
+
+    label = tk.Label(frame, text='BOXES(QUANTITY)')
+    label.grid(row=1, column=2, padx=10, pady=10)
+    entry = tk.Entry(frame)
+    entry.grid(row=1, column=3, padx=10, pady=10)
+    cols = ['TILE_NAME', 'BOXES(QTY)']
+    data(cols)
 
 def _2020():
-    pass
+    global frame, Tile_name_entry, entry
+    frame = tk.LabelFrame(root, text='20x20')
+    frame.pack(fill='x', padx=20, expand=True)
+    number_label = tk.Label(frame, text='TILE NAME')
+    number_label.grid(row=1, column=0, padx=10, pady=10)
+    Tile_name_entry = tk.Entry(frame)
+    Tile_name_entry.grid(row=1, column=1, padx=10, pady=10)
+
+    label = tk.Label(frame, text='BOXES(QUANTITY)')
+    label.grid(row=1, column=2, padx=10, pady=10)
+    entry = tk.Entry(frame)
+    entry.grid(row=1, column=3, padx=10, pady=10)
+    cols = ['TILE_NAME', 'BOXES(QTY)']
+    data(cols)
 
 
 options = ["12X18", "1X2", "2X4", "2X2", "16X16", "20X20"]

@@ -8,7 +8,8 @@ class Debt:
 
     def check(self):
         query = 'select * from Customer_debt'
-        return pd.read_sql(query, self.__conn)
+        self.__cursor.execute(query)
+        return self.__cursor.fetchall()
 
     def update_paid(self, cust_id):
         query = 'drop from Customer_debt where Cust_id = %s'
