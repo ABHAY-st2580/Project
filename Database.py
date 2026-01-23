@@ -1,7 +1,9 @@
 import mysql.connector
 from mysql.connector import Error
 
+conn = None
 def get_connection():
+    global conn
     try:
         conn = mysql.connector.connect(
             host="localhost",
@@ -19,4 +21,5 @@ def get_connection():
         return None
 
 def close_connection():
-    pass
+    if conn is not None:
+        conn.close()

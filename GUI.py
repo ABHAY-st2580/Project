@@ -29,13 +29,35 @@ root.geometry("600x400")
 
 def view():
     global records, tree_
-    tree_.delete(*tree_.get_children())
+    if(tree_ != None):
+        tree_.delete(*tree_.get_children())
     for index, row in enumerate(records):
         if index % 2 == 0:
             tree_.insert("", "end", values=row, tags=('evenrow',))
         else:
             tree_.insert("", "end", values=row, tags=('oddrow',))
 
+def check_data():
+    global records
+    value = combo.get()
+    if (value == '12X18'):
+        records = _12_18_.check()
+        view()
+    elif (value == '1X2'):
+        records = _1_2_.check()
+        view()
+    elif (value == '2X2'):
+        records = _2_2_.check()
+        view()
+    elif (value == '2X4'):
+        records = _2_4_.check()
+        view()
+    elif (value == '16X16'):
+        records = _16_16_.check()
+        view()
+    elif (value == '20X20'):
+        records = _20_20_.check()
+        view()
 def new_record():
     global frame, Tile_name_entry, entry, hl_entry, l_entry, d_entry, f_entry, Tile_number_entry, records
     value = combo.get()
@@ -176,6 +198,7 @@ def _1218():
     add_record.grid(row = 2, columns = 4, padx = 30, pady = 10)
     cols = ['Tile_Number','HL', 'L', 'D', 'F']
     data(cols)
+    check_data()
 
 def _12():
     global frame, Tile_number_entry, hl_entry,l_entry,d_entry,f_entry
@@ -213,6 +236,7 @@ def _12():
     add_record.grid(row=2, columns=4, padx=30, pady=10)
     cols = ['TILE_NUMBER', 'HL', 'L', 'D', 'F']
     data(cols)
+    check_data()
 
 def _22():
     global frame, Tile_name_entry, entry
@@ -235,6 +259,7 @@ def _22():
     add_record.grid(row=2, columns=4, padx=30, pady=10)
     cols = ['TILE_NAME', 'BOXES(QTY)']
     data(cols)
+    check_data()
 
 def _24():
     global frame, Tile_name_entry, entry
@@ -257,6 +282,7 @@ def _24():
     add_record.grid(row=2, columns=4, padx=30, pady=10)
     cols = ['TILE_NAME', 'BOXES(QTY)']
     data(cols)
+    check_data()
 
 def _1616():
     global frame, Tile_name_entry, entry
@@ -279,6 +305,7 @@ def _1616():
     add_record.grid(row=2, columns=4, padx=30, pady=10)
     cols = ['TILE_NAME', 'BOXES(QTY)']
     data(cols)
+    check_data()
 
 def _2020():
     global frame, Tile_name_entry, entry
@@ -301,6 +328,7 @@ def _2020():
     add_record.grid(row=2, columns=4, padx=30, pady=10)
     cols = ['TILE_NAME', 'BOXES(QTY)']
     data(cols)
+    check_data()
 
 
 options = ["12X18", "1X2", "2X4", "2X2", "16X16", "20X20"]
