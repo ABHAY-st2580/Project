@@ -18,4 +18,5 @@ def get_connection():
         print("Error while connecting to MySQL:", e)
         return None
 
-get_connection()
+def close_connection():
+    pass
