@@ -11,7 +11,10 @@ class _12_18_:
     def check(self):
         query = 'select * from _12_18_'
         self.__cursor.execute(query)
-        return self.__cursor.fetchall()
+        records = self.__cursor.fetchall()
+        self.__cursor.close()
+        self.__conn.close()
+        return records
 
     def new_design(self, design_number, hl_qty, l_qty, d_qty, f_qty):
         query = 'insert into _12_18_ (Tile_number, HL_qty, L_qty, D_qty, F_qty) values (%s, %s, %s, %s, %s)'
@@ -19,7 +22,7 @@ class _12_18_:
         self.__conn.commit()
 
     def remove_design(self, design_number):
-        query = 'drop from _12_18_ where Tile_number = %s'
+        query = 'delete from _12_18_ where Tile_number = %s'
         self.__cursor.execute(query, (design_number,))
         self.__conn.commit()
 
@@ -33,7 +36,10 @@ class _2_4_:
     def check(self):
         query = 'select * from _2_4_'
         self.__cursor.execute(query)
-        return self.__cursor.fetchall()
+        records = self.__cursor.fetchall()
+        self.__cursor.close()
+        self.__conn.close()
+        return records
 
     def new_design(self, design_name, qty):
         query = 'insert into _2_4_ (Tile_name, Qty) values (%s, %s)'
@@ -41,7 +47,7 @@ class _2_4_:
         self.__conn.commit()
 
     def remove_design(self, design_name):
-        query = 'drop from _2_4_ where Tile_name = %s'
+        query = 'delete from _2_4_ where Tile_name = %s'
         self.__cursor.execute(query, (design_name,))
         self.__conn.commit()
 
@@ -55,7 +61,10 @@ class _2_2_:
     def check(self):
         query = 'select * from _2_2_'
         self.__cursor.execute(query)
-        return self.__cursor.fetchall()
+        records = self.__cursor.fetchall()
+        self.__cursor.close()
+        self.__conn.close()
+        return records
 
     def new_design(self, design_name, qty):
         query = 'insert into _2_2_ (Tile_name, Qty) values (%s, %s)'
@@ -63,7 +72,7 @@ class _2_2_:
         self.__conn.commit()
 
     def remove_design(self, design_name):
-        query = 'drop from _2_2_ where Tile_name = %s'
+        query = 'delete from _2_2_ where Tile_name = %s'
         self.__cursor.execute(query, (design_name,))
         self.__conn.commit()
 
@@ -77,7 +86,10 @@ class _1_2_:
     def check(self):
         query = 'select * from _1_2_'
         self.__cursor.execute(query)
-        return self.__cursor.fetchall()
+        records = self.__cursor.fetchall()
+        self.__cursor.close()
+        self.__conn.close()
+        return records
 
     def new_design(self, design_number, hl_qty, l_qty, d_qty, f_qty):
         query = 'insert into _1_2_ (Tile_number, HL_qty, L_qty, D_qty, F_qty) values (%s, %s, %s, %s, %s)'
@@ -85,7 +97,7 @@ class _1_2_:
         self.__conn.commit()
 
     def remove_design(self, design_number):
-        query = 'drop from _1_2_ where Tile_number = %s'
+        query = 'delete from _1_2_ where Tile_number = %s'
         self.__cursor.execute(query, (design_number,))
         self.__conn.commit()
 
@@ -99,16 +111,18 @@ class _16_16_:
     def check(self):
         query = 'select * from _16_16_'
         self.__cursor.execute(query)
-        return self.__cursor.fetchall()
+        records = self.__cursor.fetchall()
+        self.__cursor.close()
+        self.__conn.close()
+        return records
 
     def new_design(self, design_name, design_number, qty):
         query = 'insert into _16_16_(Design_name, Tile_number, Qty) values (%s, %s, %s)'
         self.__cursor.execute(query, (design_name, design_number, qty))
         self.__conn.commit()
-
-    def remove_design(self, design_number):
-        query = 'drop from _16_16_ where Tile_number = %s'
-        self.__cursor.execute(query, (design_number,))
+    def remove_design(self, design_name):
+        query = 'delete from _16_16_ where Design_name = %s'
+        self.__cursor.execute(query, (design_name,))
         self.__conn.commit()
 
 
@@ -121,14 +135,17 @@ class _20_20_:
     def check(self):
         query = 'select * from _20_20_'
         self.__cursor.execute(query)
-        return self.__cursor.fetchall()
+        records = self.__cursor.fetchall()
+        self.__cursor.close()
+        self.__conn.close()
+        return records
 
     def new_design(self, design_name, design_number, qty):
         query = 'insert into _20_20_(Design_name, Tile_number, Qty) values (%s, %s, %s)'
         self.__cursor.execute(query, (design_name, design_number, qty))
         self.__conn.commit()
 
-    def remove_design(self, design_number):
-        query = 'drop from _20_20_ where Tile_number = %s'
-        self.__cursor.execute(query, (design_number,))
+    def remove_design(self, design_name):
+        query = 'delete from _20_20_ where Design_name = %s'
+        self.__cursor.execute(query, (design_name,))
         self.__conn.commit()
