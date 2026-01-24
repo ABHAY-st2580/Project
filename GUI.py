@@ -22,30 +22,6 @@ root = tk.Tk()
 root.title("STOCK_MANAGER_APP")
 root.geometry("600x400")
 
-# def extra_action_buttons():
-#     extra_frame = tk.Frame(root)
-#     extra_frame.pack(fill='x', padx=10, pady=5)
-#
-#     tk.Button(
-#         extra_frame,
-#         text="EXPORT TO EXCEL",
-#         width=18,
-#         command=lambda: print("Export clicked")
-#     ).pack(pady=5)
-#
-#     tk.Button(
-#         extra_frame,
-#         text="GENERATE REPORT",
-#         width=18,
-#         command=lambda: print("Report clicked")
-#     ).pack(pady=5)
-#
-#     tk.Button(
-#         extra_frame,
-#         text="OPEN SALES WINDOW",
-#         width=20,
-#         command=lambda: print("Sales clicked")
-#     ).pack(pady=5)
 
 def remove_selected_one():
     global tree_, Tile_name_entry, Tile_number_entry
@@ -196,6 +172,12 @@ def new_record():
 def update():
     global frame, Tile_name_entry, entry, hl_entry,l_entry,d_entry,f_entry,Tile_number_entry, records, tree_
     value = combo.get()
+    if Tile_number_entry is None:
+        messagebox.showwarning("Warning", "Please Fill Tile_Number")
+        return
+    if Tile_name_entry is None:
+        messagebox.showwarning("Warning", "Please Fill Tile_Name")
+        return
     if (value == '12X18'):
         _12_18 = _12_18_()
         update_items.update_in_stock(Tile_number= Tile_number_entry.get(), Tile_size= 1218, hl_qty = hl_entry.get(), l_qty = l_entry.get(),
@@ -223,7 +205,6 @@ def update():
         _20_20 = _20_20_()
         update_items.update_in_stock(Tile_name=Tile_name_entry.get(), Tile_size=2020, qty=entry.get())
         records = _20_20.check()
-
     view(records)
 
 def Select_tile_type():
@@ -249,6 +230,9 @@ def Select_tile_type():
         _1616()
     elif (value == '20X20'):
         _2020()
+    else:
+        messagebox.showwarning("Warning", "Please Fill Correct Tile_Type")
+        return
 def data(cols):
     global tree_, tree
     style = ttk.Style()
@@ -302,7 +286,7 @@ def _1218():
     f_entry = tk.Entry(frame)
     f_entry.grid(row=1, column=9, padx=10, pady=10)
 
-    update_ = tk.Button(frame, text="UPDATE BOXES", command = update)
+    update_ = tk.Button(frame, text="TILE_SOLD(UPDATE)", command = update)
     update_.grid(row=2, column=0, padx=30, pady=10)
 
     add_record = tk.Button(frame, text = 'ADD NEW DESIGN', command = new_record)
@@ -316,7 +300,6 @@ def _1218():
     cols = ['Tile_Number','HL', 'L', 'D', 'F']
     data(cols)
     check_data()
-    extra_action_buttons()
 
 def _12():
     global frame, Tile_number_entry, hl_entry,l_entry,d_entry,f_entry
@@ -347,7 +330,7 @@ def _12():
     f_entry = tk.Entry(frame)
     f_entry.grid(row=1, column=9, padx=10, pady=10)
 
-    button = tk.Button(frame, text="UPDATE", command=update)
+    button = tk.Button(frame, text="TILE_SOLD(UPDATE)", command=update)
     button.grid(row=2, column=0, padx=30, pady=10)
 
     add_record = tk.Button(frame, text='ADD NEW DESIGN', command=new_record)
@@ -376,7 +359,7 @@ def _22():
     entry = tk.Entry(frame)
     entry.grid(row=1, column=3, padx=10, pady=10)
 
-    button = tk.Button(frame, text="UPDATE", command=update)
+    button = tk.Button(frame, text="TILE_SOLD(UPDATE)", command=update)
     button.grid(row=2, column=0, padx=30, pady=10)
 
     add_record = tk.Button(frame, text='ADD NEW DESIGN', command=new_record)
@@ -405,7 +388,7 @@ def _24():
     entry = tk.Entry(frame)
     entry.grid(row=1, column=3, padx=10, pady=10)
 
-    button = tk.Button(frame, text="UPDATE", command=update)
+    button = tk.Button(frame, text="TILE_SOLD(UPDATE)", command=update)
     button.grid(row=2, column=0, padx=30, pady=10)
 
     add_record = tk.Button(frame, text='ADD NEW DESIGN', command=new_record)
@@ -434,7 +417,7 @@ def _1616():
     entry = tk.Entry(frame)
     entry.grid(row=1, column=3, padx=10, pady=10)
 
-    button = tk.Button(frame, text="UPDATE", command=update)
+    button = tk.Button(frame, text="TILE_SOLD(UPDATE)", command=update)
     button.grid(row=2, column=0, padx=30, pady=10)
 
     add_record = tk.Button(frame, text='ADD NEW DESIGN', command=new_record)
@@ -463,7 +446,7 @@ def _2020():
     entry = tk.Entry(frame)
     entry.grid(row=1, column=3, padx=10, pady=10)
 
-    button = tk.Button(frame, text="UPDATE", command=update)
+    button = tk.Button(frame, text="TILE_SOLD(UPDATE)", command=update)
     button.grid(row=2, column=0, padx=30, pady=10)
 
     add_record = tk.Button(frame, text='ADD NEW DESIGN', command=new_record)
@@ -477,7 +460,6 @@ def _2020():
     cols = ['TILE_NAME', 'BOXES(QTY)']
     data(cols)
     check_data()
-
 
 options = ["12X18", "1X2", "2X4", "2X2", "16X16", "20X20"]
 dropdown_frame = tk.Frame(root)
