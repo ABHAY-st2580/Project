@@ -1,6 +1,4 @@
 from Database import get_connection
-import pandas as pd
-import numpy as np
 class Debt:
     def __init__(self):
         self.__conn = get_connection()
