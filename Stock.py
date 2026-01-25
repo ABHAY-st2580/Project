@@ -1,6 +1,5 @@
 from Database import get_connection
 
-import pandas as pd
 
 class _12_18_:
 
