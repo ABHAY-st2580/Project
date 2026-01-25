@@ -3,6 +3,8 @@ from Database import get_connection
 class Sale:
   def __init__(self):
     self.__conn = get_connection()
+    if (self.__conn is None):
+      raise Exception("Database connection failed. MySQL not available.")
     self.__cursor = self.__conn.cursor()
 
   def All_sale(self):
@@ -23,6 +25,8 @@ class Sale:
 class Sale_Items:
   def __init__(self):
     self.__conn = get_connection()
+    if(self.__conn is None):
+      raise Exception("Database connection failed. MySQL not available.")
     self.__cursor = self.__conn.cursor()
   
   def update_in_stock(self, Tile_number = 0, Tile_name = "", Tile_size = 0, qty = 0, hl_qty = 0, l_qty = 0, d_qty = 0, f_qty = 0):

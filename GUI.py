@@ -4,10 +4,7 @@ from Stock import _2_2_
 from Stock import _2_4_
 from Stock import _16_16_
 from Stock import _20_20_
-from Sale import Sale
 from Sale import Sale_Items
-from Debt import Debt
-from Database import get_connection
 
 import tkinter as tk
 from tkinter import ttk, messagebox
@@ -15,6 +12,7 @@ from tkinter import ttk, messagebox
 frame = None
 tree_ = None
 tree = None
+p2 = None
 Tile_number_entry, hl_entry, l_entry, d_entry, f_entry, Tile_name_entry, entry, records = None, None, None,None,None,None,None, None
 update_items = Sale_Items()
 
@@ -131,7 +129,7 @@ def check_data():
         record1 = _20_20.check()
         view(record1)
 def new_record():
-    global frame, Tile_name_entry, entry, hl_entry, l_entry, d_entry, f_entry, Tile_number_entry, records
+    global frame, Tile_name_entry, entry, hl_entry, l_entry, d_entry, f_entry, Tile_number_entry, records, p2
     value = combo.get()
     if (value == '12X18'):
         _12_18 = _12_18_()
@@ -149,7 +147,7 @@ def new_record():
         view(records)
     elif (value == '2X2'):
         _2_2 = _2_2_()
-        _2_2_.new_design(design_name=Tile_name_entry.get(), qty=entry.get())
+        _2_2.new_design(design_name=Tile_name_entry.get(), qty=entry.get())
         records = _2_2.check()
         view(records)
     elif (value == '2X4'):
@@ -159,12 +157,12 @@ def new_record():
         view(records)
     elif (value == '16X16'):
         _16_16 = _16_16_()
-        _16_16.new_design(design_name=Tile_name_entry.get(), design_number = 0, qty=entry.get())
+        _16_16.new_design(design_name=Tile_name_entry.get(), design_number = p2.get(), qty=entry.get())
         records = _16_16.check()
         view(records)
     elif (value == '20X20'):
         _20_20 = _20_20_()
-        _20_20.new_design(design_name=Tile_name_entry.get(), design_number = 0, qty=entry.get())
+        _20_20.new_design(design_name=Tile_name_entry.get(), design_number = p2.get(), qty=entry.get())
         records = _20_20.check()
         view(records)
 
@@ -404,7 +402,7 @@ def _24():
     check_data()
 
 def _1616():
-    global frame, Tile_name_entry, entry
+    global frame, Tile_name_entry, entry, p2
     frame = tk.LabelFrame(root, text='16X16')
     frame.pack(fill='x', padx=20, pady = 2)
     number_label = tk.Label(frame, text='TILE NAME')
@@ -412,10 +410,15 @@ def _1616():
     Tile_name_entry = tk.Entry(frame)
     Tile_name_entry.grid(row=1, column=1, padx=10, pady=10)
 
+    l2 = tk.Label(frame, text='TILE NUMBER')
+    l2.grid(row=1, column=2, padx=10, pady=10)
+    p2 = tk.Entry(frame)
+    p2.grid(row=1, column=3, padx=10, pady=10)
+
     label = tk.Label(frame, text='BOXES(QUANTITY)')
-    label.grid(row=1, column=2, padx=10, pady=10)
+    label.grid(row=1, column=4, padx=10, pady=10)
     entry = tk.Entry(frame)
-    entry.grid(row=1, column=3, padx=10, pady=10)
+    entry.grid(row=1, column=5, padx=10, pady=10)
 
     button = tk.Button(frame, text="TILE_SOLD(UPDATE)", command=update)
     button.grid(row=2, column=0, padx=30, pady=10)
@@ -428,23 +431,28 @@ def _1616():
 
     remove_selected = tk.Button(frame, text='REMOVE_SELECTED_ONE', command=remove_selected_one)
     remove_selected.grid(row=2, column=3, padx=30, pady=10)
-    cols = ['TILE_NAME', 'BOXES(QTY)']
+    cols = ['TILE_NAME','TILE_NUMBER', 'BOXES(QTY)']
     data(cols)
     check_data()
 
 def _2020():
-    global frame, Tile_name_entry, entry
-    frame = tk.LabelFrame(root, text='20x20')
-    frame.pack(fill='x', padx=20, pady = 2)
+    global frame, Tile_name_entry, entry, p2
+    frame = tk.LabelFrame(root, text='16X16')
+    frame.pack(fill='x', padx=20, pady=2)
     number_label = tk.Label(frame, text='TILE NAME')
     number_label.grid(row=1, column=0, padx=10, pady=10)
     Tile_name_entry = tk.Entry(frame)
     Tile_name_entry.grid(row=1, column=1, padx=10, pady=10)
 
+    l2 = tk.Label(frame, text='TILE NUMBER')
+    l2.grid(row=1, column=2, padx=10, pady=10)
+    p2 = tk.Entry(frame)
+    p2.grid(row=1, column=3, padx=10, pady=10)
+
     label = tk.Label(frame, text='BOXES(QUANTITY)')
-    label.grid(row=1, column=2, padx=10, pady=10)
+    label.grid(row=1, column=4, padx=10, pady=10)
     entry = tk.Entry(frame)
-    entry.grid(row=1, column=3, padx=10, pady=10)
+    entry.grid(row=1, column=5, padx=10, pady=10)
 
     button = tk.Button(frame, text="TILE_SOLD(UPDATE)", command=update)
     button.grid(row=2, column=0, padx=30, pady=10)
@@ -457,7 +465,7 @@ def _2020():
 
     remove_selected = tk.Button(frame, text='REMOVE_SELECTED_ONE', command=remove_selected_one)
     remove_selected.grid(row=2, column=3, padx=30, pady=10)
-    cols = ['TILE_NAME', 'BOXES(QTY)']
+    cols = ['TILE_NAME', 'TILE_NUMBER', 'BOXES(QTY)']
     data(cols)
     check_data()
 
