@@ -480,4 +480,74 @@ button = tk.Button(dropdown_frame, text= "Check_Data", command = Select_tile_typ
 button.grid(row = 0, column = 3, padx = 30, pady = 3)
 
 
+bottom_frame = tk.Frame(root)
+bottom_frame.pack(fill="both", expand=True)
+
+#ML results
+ml_frame = tk.LabelFrame(bottom_frame, text="ML Insights")
+ml_frame.pack(side="left", fill="both", expand=True, padx=5, pady=5)
+
+ml_text = tk.Text(ml_frame, height=10)
+ml_text.pack(fill="both", expand=True)
+
+#Sale input
+sale_frame = tk.LabelFrame(bottom_frame, text="Sale Entry")
+sale_frame.pack(side="right", fill="both", expand=True, padx=5, pady=5)
+
+
+tk.Label(sale_frame, text="Customer_Name").grid(row=0, column=0)
+name = tk.Entry(sale_frame)
+name.grid(row=0, column=1)
+
+tk.Label(sale_frame, text="Total_Amount").grid(row=1, column=0)
+amt = tk.Entry(sale_frame)
+amt.grid(row=1, column=1)
+
+tk.Label(sale_frame, text="Fare_Amount").grid(row=2, column=0)
+fa = tk.Entry(sale_frame)
+fa.grid(row=2, column=1)
+
+tk.Label(sale_frame, text="Amount_Pending").grid(row=3, column=0)
+ap = tk.Entry(sale_frame)
+ap.grid(row=3, column=1)
+
+tk.Label(sale_frame, text="Address").grid(row=4, column=0)
+a = tk.Entry(sale_frame)
+a.grid(row=4, column=1)
+
+tk.Label(sale_frame, text="Phone_Number").grid(row=5, column=0)
+pn = tk.Entry(sale_frame)
+pn.grid(row=5, column=1)
+
+tk.Label(sale_frame, text="2X4_name").grid(row=0, column=3)
+_24_name = tk.Entry(sale_frame)
+_24_name.grid(row=0, column=4)
+tk.Label(sale_frame, text="2X4_qty").grid(row=1, column=3)
+_24_qty = tk.Entry(sale_frame)
+_24_qty.grid(row=1, column=4)
+
+tk.Label(sale_frame, text="2X2_name").grid(row=2, column=3)
+_22_name = tk.Entry(sale_frame)
+_22_name.grid(row=2, column=4)
+tk.Label(sale_frame, text="2X2_qty").grid(row=3, column=3)
+_22_qty = tk.Entry(sale_frame)
+_22_qty.grid(row=3, column=4)
+
+tk.Label(sale_frame, text="16X16_name").grid(row=4, column=3)
+_1616_name = tk.Entry(sale_frame)
+_1616_name.grid(row=4, column=4)
+tk.Label(sale_frame, text="16X16_qty").grid(row=5, column=3)
+_1616_qty = tk.Entry(sale_frame)
+_1616_qty.grid(row=5, column=4)
+
+tk.Label(sale_frame, text="20X20_name").grid(row=6, column=3)
+_22_name = tk.Entry(sale_frame)
+_22_name.grid(row=6, column=4)
+tk.Label(sale_frame, text="20X20_qty").grid(row=7, column=3)
+_22_qty = tk.Entry(sale_frame)
+_22_qty.grid(row=7, column=4)
+
+tk.Button(sale_frame, text="Add Sale").grid(row=8, column=0, columnspan=2)
+
+
 root.mainloop()

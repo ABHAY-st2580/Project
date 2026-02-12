@@ -34,6 +34,7 @@ Create Table _2_2_(
     Qty INT
 );
 
+
 Create Table Customer_debt(
 	Cust_id INT auto_increment Primary Key,
     Customer_name varchar(20),
@@ -43,11 +44,12 @@ Create Table Customer_debt(
 );
 CREATE TABLE Sale (
     Sale_id INT AUTO_INCREMENT PRIMARY KEY,
-    Cust_id INT,
+    Cust_name varchar(20),
     Date_ TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     Total_Amount INT,
     Fare_Amount INT,
     Amount_Paid INT,
     Amount_Pending INT,
-    FOREIGN KEY (Cust_id) REFERENCES Customer_debt(Cust_id)
+    Address varchar(200),
+    Phone_number int(10)
 );
