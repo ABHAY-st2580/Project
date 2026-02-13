@@ -36,7 +36,7 @@ Create Table _2_2_(
 
 
 Create Table Customer_debt(
-	Cust_id INT auto_increment Primary Key,
+	   Cust_id INT auto_increment Primary Key,
     Customer_name varchar(20),
     Customer_phone_number INT(10),
     Customer_Address varchar(250),
@@ -49,6 +49,15 @@ CREATE TABLE Sale (
     Total_Amount INT,
     Fare_Amount INT,
     Amount_Pending INT,
-    Address varchar(200),
+    Address Text,
     Phone_number int(10)
+);
+CREATE TABLE sale_items (
+    item_id INT AUTO_INCREMENT PRIMARY KEY,
+    sale_id INT,
+    tile_type VARCHAR(20),
+    HL_L_D_F VARCHAR(20) default NULL,
+    tile_name_number VARCHAR(100),
+    quantity INT,
+    FOREIGN KEY (Sale_id) REFERENCES Sale(Sale_id)
 );
