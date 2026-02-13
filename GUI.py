@@ -4,7 +4,7 @@ from Stock import _2_2_
 from Stock import _2_4_
 from Stock import _16_16_
 from Stock import _20_20_
-from Sale import Sale_Items
+from Sale import Sale_Items, Sale
 
 import tkinter as tk
 from tkinter import ttk, messagebox
@@ -204,6 +204,29 @@ def update():
         update_items.update_in_stock(Tile_name=Tile_name_entry.get(), Tile_size=2020, qty=entry.get())
         records = _20_20.check()
     view(records)
+
+def Check_Sale():
+    global frame, tree_
+    if (frame is not None):
+        frame.destroy()
+    if (tree_ is not None):
+        tree_.destroy()
+    if (tree is not None):
+        tree.destroy()
+
+    frame = tk.LabelFrame(root, text='SALE')
+    frame.pack(fill='x', padx=10, pady=2)
+    update_ = tk.Button(frame, text="Sale(UPDATE)", command=update)
+    update_.grid(row=0, column=0, padx=30, pady=10)
+    clear_box = tk.Button(frame, text='Clear_Sale', command=clear_boxes)
+    clear_box.grid(row=0, column=2, padx=30, pady=10)
+    remove_selected = tk.Button(frame, text='REMOVE_SELECTED_ONE', command=remove_selected_one)
+    remove_selected.grid(row=0, column=3, padx=30, pady=10)
+    cols = ['Sale_id', 'Cust_name', 'Date', 'Total_Amount', 'Fare_Amount', 'Amount_Pending', 'Address', 'Phone_number']
+    data(cols)
+    sale = Sale()
+    record = sale.All_sale()
+    view(record)
 
 def Select_tile_type():
     value = combo.get()
@@ -478,6 +501,8 @@ combo = ttk.Combobox(dropdown_frame, values=options)
 combo.grid(row = 0, column= 1, padx = 10, pady = 10)
 button = tk.Button(dropdown_frame, text= "Check_Data", command = Select_tile_type)
 button.grid(row = 0, column = 3, padx = 30, pady = 3)
+sale__ = tk.Button(dropdown_frame, text= "Check_Sale", command = Check_Sale)
+sale__.grid(row = 0, column = 4, padx = 30, pady = 3)
 
 
 bottom_frame = tk.Frame(root)

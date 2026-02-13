@@ -48,7 +48,6 @@ CREATE TABLE Sale (
     Date_ TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     Total_Amount INT,
     Fare_Amount INT,
-    Amount_Paid INT,
     Amount_Pending INT,
     Address varchar(200),
     Phone_number int(10)
