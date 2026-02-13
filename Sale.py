@@ -12,13 +12,14 @@ class Sale:
     self.__cursor.execute(query)
     return self.__cursor.fetchall()
 
-  def new_sale(self, amount, paid, pending, phone_number, address):
-    query = 'insert into Sale(Customer_phone_num, Total_Amount, Amount_Paid, Amount_Pending) values (%s, %s, %s, %s)'
-    self.__cursor.execute(query, (phone_number, amount, paid, pending))
+  def new_sale(self, amount, name, Fare_Amount, pending, phone_number, address):
+    query = 'insert into Sale(Cust_name, Total_Amount, Fare_Amount, Amount_Pending, Address, Phone_number) values (%s, %s, %s, %s, %s, %s)'
+    self.__cursor.execute(query, (name, amount, Fare_Amount, pending, address, phone_number))
     self.__conn.commit()
+    sale_id = self.__cursor.lastrowid
 
     if(pending != 0):
-      query = 'insert into Customer_debt(Customer_Address, Customer_phone_num, Amount_pending) values (%s, %s, %s)'
+      query = 'insert into Customer_debt(Customer_Address, Customer_phone_number, Amount_Pending) values (%s, %s, %s)'
       self.__cursor.execute(query, (address, phone_number, pending))
       self.__conn.commit()
 

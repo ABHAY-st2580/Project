@@ -5,7 +5,7 @@ from Stock import _2_4_
 from Stock import _16_16_
 from Stock import _20_20_
 from Sale import Sale_Items, Sale
-
+from Debt import Debt
 import tkinter as tk
 from tkinter import ttk, messagebox
 
@@ -15,10 +15,11 @@ tree = None
 p2 = None
 Tile_number_entry, hl_entry, l_entry, d_entry, f_entry, Tile_name_entry, entry, records = None, None, None,None,None,None,None, None
 update_items = Sale_Items()
+tile_entries = {}
 
 root = tk.Tk()
 root.title("STOCK_MANAGER_APP")
-root.geometry("600x400")
+root.geometry("1000x600")
 
 
 def remove_selected_one():
@@ -129,7 +130,7 @@ def check_data():
         record1 = _20_20.check()
         view(record1)
 def new_record():
-    global frame, Tile_name_entry, entry, hl_entry, l_entry, d_entry, f_entry, Tile_number_entry, records, p2
+    global Tile_name_entry, entry, hl_entry, l_entry, d_entry, f_entry, Tile_number_entry, records, p2
     value = combo.get()
     if (value == '12X18'):
         _12_18 = _12_18_()
@@ -204,7 +205,20 @@ def update():
         update_items.update_in_stock(Tile_name=Tile_name_entry.get(), Tile_size=2020, qty=entry.get())
         records = _20_20.check()
     view(records)
+def add_sale_record():
+    global customer_entries, tile_entries
+    sale = Sale()
+    customer_name = customer_entries["Customer Name"].get()
+    total_amount = customer_entries["Total Amount"].get()
+    fare_amount = customer_entries["Fare Amount"].get()
+    amount_pending = customer_entries["Amount Pending"].get()
+    address = customer_entries["Address"].get()
+    phone = customer_entries["Phone Number"].get()
 
+    sale.new_sale(total_amount, customer_name, fare_amount, amount_pending, phone, address)
+
+    record = sale.All_sale()
+    view(record)
 def Check_Sale():
     global frame, tree_
     if (frame is not None):
@@ -216,18 +230,40 @@ def Check_Sale():
 
     frame = tk.LabelFrame(root, text='SALE')
     frame.pack(fill='x', padx=10, pady=2)
-    update_ = tk.Button(frame, text="Sale(UPDATE)", command=update)
+    update_ = tk.Button(frame, text="SALE(UPDATE)", command=update, font=("Arial", 8, "bold"))
     update_.grid(row=0, column=0, padx=30, pady=10)
-    clear_box = tk.Button(frame, text='Clear_Sale', command=clear_boxes)
+    clear_box = tk.Button(frame, text='CLEAR_DEBT', command=clear_boxes, font=("Arial", 8, "bold"))
     clear_box.grid(row=0, column=2, padx=30, pady=10)
-    remove_selected = tk.Button(frame, text='REMOVE_SELECTED_ONE', command=remove_selected_one)
+    remove_selected = tk.Button(frame, text='REMOVE_SELECTED_ONE', command=remove_selected_one, font=("Arial", 8, "bold"))
     remove_selected.grid(row=0, column=3, padx=30, pady=10)
-    cols = ['Sale_id', 'Cust_name', 'Date', 'Total_Amount', 'Fare_Amount', 'Amount_Pending', 'Address', 'Phone_number']
+    cols = ['Sale_id', 'Customer_Name', 'Date', 'Total_Amount', 'Fare_Amount', 'Amount_Pending', 'Address', 'Phone_Number']
     data(cols)
     sale = Sale()
     record = sale.All_sale()
     view(record)
 
+def Check_Debt():
+    global frame, tree_
+    if (frame is not None):
+        frame.destroy()
+    if (tree_ is not None):
+        tree_.destroy()
+    if (tree is not None):
+        tree.destroy()
+
+    frame = tk.LabelFrame(root, text='DEBT')
+    frame.pack(fill='x', padx=10, pady=2)
+    update_ = tk.Button(frame, text="DEBT(UPDATE)", command=update, font=("Arial", 8, "bold"))
+    update_.grid(row=0, column=0, padx=30, pady=10)
+    clear_box = tk.Button(frame, text='CLEAR_DEBT', command=clear_boxes, font=("Arial", 8, "bold"))
+    clear_box.grid(row=0, column=2, padx=30, pady=10)
+    remove_selected = tk.Button(frame, text='REMOVE_SELECTED_ONE', command=remove_selected_one, font=("Arial", 8, "bold"))
+    remove_selected.grid(row=0, column=3, padx=30, pady=10)
+    cols = ['Customer_Name', 'Amount_Pending', 'Address', 'Phone_Number']
+    data(cols)
+    debt = Debt()
+    record = debt.check()
+    view(record)
 def Select_tile_type():
     value = combo.get()
     global frame, tree_
@@ -307,16 +343,16 @@ def _1218():
     f_entry = tk.Entry(frame)
     f_entry.grid(row=1, column=9, padx=10, pady=10)
 
-    update_ = tk.Button(frame, text="TILE_SOLD(UPDATE)", command = update)
+    update_ = tk.Button(frame, text="TILE_SOLD(UPDATE)", command = update, font=("Arial", 8, "bold"), bg = 'lightblue')
     update_.grid(row=2, column=0, padx=30, pady=10)
 
-    add_record = tk.Button(frame, text = 'ADD NEW DESIGN', command = new_record)
+    add_record = tk.Button(frame, text = 'ADD NEW DESIGN', command = new_record, font=("Arial", 8, "bold"), bg = 'lightblue')
     add_record.grid(row = 2, column = 1, padx = 30, pady = 10)
 
-    clear_box = tk.Button(frame, text='CLEAR_BOXES', command=clear_boxes)
+    clear_box = tk.Button(frame, text='CLEAR_BOXES', command=clear_boxes, font=("Arial", 8, "bold"), bg = 'lightblue')
     clear_box.grid(row=2, column=2, padx=30, pady=10)
 
-    remove_selected = tk.Button(frame, text='REMOVE_SELECTED_ONE', command=remove_selected_one)
+    remove_selected = tk.Button(frame, text='REMOVE_SELECTED_ONE', command=remove_selected_one, font=("Arial", 8, "bold"), bg = 'lightblue')
     remove_selected.grid(row=2, column=3, padx=30, pady=10)
     cols = ['Tile_Number','HL', 'L', 'D', 'F']
     data(cols)
@@ -351,16 +387,16 @@ def _12():
     f_entry = tk.Entry(frame)
     f_entry.grid(row=1, column=9, padx=10, pady=10)
 
-    button = tk.Button(frame, text="TILE_SOLD(UPDATE)", command=update)
+    button = tk.Button(frame, text="TILE_SOLD(UPDATE)", command=update, font=("Arial", 8, "bold"), bg = 'lightblue')
     button.grid(row=2, column=0, padx=30, pady=10)
 
-    add_record = tk.Button(frame, text='ADD NEW DESIGN', command=new_record)
+    add_record = tk.Button(frame, text='ADD NEW DESIGN', command=new_record, font=("Arial", 8, "bold"), bg = 'lightblue')
     add_record.grid(row=2, column=1, padx=30, pady=10)
 
-    clear_box = tk.Button(frame, text='CLEAR_BOXES', command=clear_boxes)
+    clear_box = tk.Button(frame, text='CLEAR_BOXES', command=clear_boxes, font=("Arial", 8, "bold"), bg = 'lightblue')
     clear_box.grid(row=2, column=2, padx=30, pady=10)
 
-    remove_selected = tk.Button(frame, text='REMOVE_SELECTED_ONE', command=remove_selected_one)
+    remove_selected = tk.Button(frame, text='REMOVE_SELECTED_ONE', command=remove_selected_one, font=("Arial", 8, "bold"), bg = 'lightblue')
     remove_selected.grid(row=2, column=3, padx=30, pady=10)
     cols = ['TILE_NUMBER', 'HL', 'L', 'D', 'F']
     data(cols)
@@ -380,16 +416,16 @@ def _22():
     entry = tk.Entry(frame)
     entry.grid(row=1, column=3, padx=10, pady=10)
 
-    button = tk.Button(frame, text="TILE_SOLD(UPDATE)", command=update)
+    button = tk.Button(frame, text="TILE_SOLD(UPDATE)", command=update, font=("Arial", 8, "bold"), bg = 'lightblue')
     button.grid(row=2, column=0, padx=30, pady=10)
 
-    add_record = tk.Button(frame, text='ADD NEW DESIGN', command=new_record)
+    add_record = tk.Button(frame, text='ADD NEW DESIGN', command=new_record, font=("Arial", 8, "bold"), bg = 'lightblue')
     add_record.grid(row=2, column=1, padx=30, pady=10)
 
-    clear_box = tk.Button(frame, text='CLEAR_BOXES', command=clear_boxes)
+    clear_box = tk.Button(frame, text='CLEAR_BOXES', command=clear_boxes, font=("Arial", 8, "bold"), bg = 'lightblue')
     clear_box.grid(row=2, column=2, padx=30, pady=10)
 
-    remove_selected = tk.Button(frame, text='REMOVE_SELECTED_ONE', command=remove_selected_one)
+    remove_selected = tk.Button(frame, text='REMOVE_SELECTED_ONE', command=remove_selected_one, font=("Arial", 8, "bold"), bg = 'lightblue')
     remove_selected.grid(row=2, column=3, padx=30, pady=10)
     cols = ['TILE_NAME', 'BOXES(QTY)']
     data(cols)
@@ -409,16 +445,16 @@ def _24():
     entry = tk.Entry(frame)
     entry.grid(row=1, column=3, padx=10, pady=10)
 
-    button = tk.Button(frame, text="TILE_SOLD(UPDATE)", command=update)
+    button = tk.Button(frame, text="TILE_SOLD(UPDATE)", command=update, font=("Arial", 8, "bold"), bg = 'lightblue')
     button.grid(row=2, column=0, padx=30, pady=10)
 
-    add_record = tk.Button(frame, text='ADD NEW DESIGN', command=new_record)
+    add_record = tk.Button(frame, text='ADD NEW DESIGN', command=new_record, font=("Arial", 8, "bold"), bg = 'lightblue')
     add_record.grid(row=2, column=1, padx=30, pady=10)
 
-    clear_box = tk.Button(frame, text='CLEAR_BOXES', command=clear_boxes)
+    clear_box = tk.Button(frame, text='CLEAR_BOXES', command=clear_boxes, font=("Arial", 8, "bold"), bg = 'lightblue')
     clear_box.grid(row=2, column=2, padx=30, pady=10)
 
-    remove_selected = tk.Button(frame, text='REMOVE_SELECTED_ONE', command=remove_selected_one)
+    remove_selected = tk.Button(frame, text='REMOVE_SELECTED_ONE', command=remove_selected_one, font=("Arial", 8, "bold"), bg = 'lightblue')
     remove_selected.grid(row=2, column=3, padx=30, pady=10)
     cols = ['TILE_NAME', 'BOXES(QTY)']
     data(cols)
@@ -443,16 +479,16 @@ def _1616():
     entry = tk.Entry(frame)
     entry.grid(row=1, column=5, padx=10, pady=10)
 
-    button = tk.Button(frame, text="TILE_SOLD(UPDATE)", command=update)
+    button = tk.Button(frame, text="TILE_SOLD(UPDATE)", command=update, font=("Arial", 8, "bold"), bg = 'lightblue')
     button.grid(row=2, column=0, padx=30, pady=10)
 
-    add_record = tk.Button(frame, text='ADD NEW DESIGN', command=new_record)
+    add_record = tk.Button(frame, text='ADD NEW DESIGN', command=new_record, font=("Arial", 8, "bold"), bg = 'lightblue')
     add_record.grid(row=2, column=1, padx=30, pady=10)
 
-    clear_box = tk.Button(frame, text='CLEAR_BOXES', command=clear_boxes)
+    clear_box = tk.Button(frame, text='CLEAR_BOXES', command=clear_boxes, font=("Arial", 8, "bold"), bg = 'lightblue')
     clear_box.grid(row=2, column=2, padx=30, pady=10)
 
-    remove_selected = tk.Button(frame, text='REMOVE_SELECTED_ONE', command=remove_selected_one)
+    remove_selected = tk.Button(frame, text='REMOVE_SELECTED_ONE', command=remove_selected_one, font=("Arial", 8, "bold"), bg = 'lightblue')
     remove_selected.grid(row=2, column=3, padx=30, pady=10)
     cols = ['TILE_NAME','TILE_NUMBER', 'BOXES(QTY)']
     data(cols)
@@ -477,16 +513,16 @@ def _2020():
     entry = tk.Entry(frame)
     entry.grid(row=1, column=5, padx=10, pady=10)
 
-    button = tk.Button(frame, text="TILE_SOLD(UPDATE)", command=update)
+    button = tk.Button(frame, text="TILE_SOLD(UPDATE)", command=update, font=("Arial", 8, "bold"), bg = 'lightblue')
     button.grid(row=2, column=0, padx=30, pady=10)
 
-    add_record = tk.Button(frame, text='ADD NEW DESIGN', command=new_record)
+    add_record = tk.Button(frame, text='ADD NEW DESIGN', command=new_record, font=("Arial", 8, "bold"), bg = 'lightblue')
     add_record.grid(row=2, column=1, padx=30, pady=10)
 
-    clear_box = tk.Button(frame, text='CLEAR_BOXES', command=clear_boxes)
+    clear_box = tk.Button(frame, text='CLEAR_BOXES', command=clear_boxes, font=("Arial", 8, "bold"), bg = 'lightblue')
     clear_box.grid(row=2, column=2, padx=30, pady=10)
 
-    remove_selected = tk.Button(frame, text='REMOVE_SELECTED_ONE', command=remove_selected_one)
+    remove_selected = tk.Button(frame, text='REMOVE_SELECTED_ONE', command=remove_selected_one, font=("Arial", 8, "bold"), bg = 'lightblue')
     remove_selected.grid(row=2, column=3, padx=30, pady=10)
     cols = ['TILE_NAME', 'TILE_NUMBER', 'BOXES(QTY)']
     data(cols)
@@ -495,84 +531,163 @@ def _2020():
 options = ["12X18", "1X2", "2X4", "2X2", "16X16", "20X20"]
 dropdown_frame = tk.Frame(root)
 dropdown_frame.pack(fill = 'x')
-Tile_type = tk.Label(dropdown_frame, text='SELECT TILE_TYPE')
+Tile_type = tk.Label(dropdown_frame, text='SELECT TILE_TYPE', fg = 'Darkblue',font=("Arial", 10, "bold"))
 Tile_type.grid(row = 0, column= 0, padx = 10, pady = 10)
 combo = ttk.Combobox(dropdown_frame, values=options)
 combo.grid(row = 0, column= 1, padx = 10, pady = 10)
-button = tk.Button(dropdown_frame, text= "Check_Data", command = Select_tile_type)
+button = tk.Button(dropdown_frame, text= "Check_Stock", command = Select_tile_type,
+    fg="white",
+    bg = 'blue',
+    font=("Arial", 8, "bold"),
+    height=1)
 button.grid(row = 0, column = 3, padx = 30, pady = 3)
-sale__ = tk.Button(dropdown_frame, text= "Check_Sale", command = Check_Sale)
+sale__ = tk.Button(dropdown_frame, text= "Check_Sale", command = Check_Sale,
+    fg="white",
+    bg = 'blue',
+    font=("Arial", 8, "bold"),
+    height=1)
 sale__.grid(row = 0, column = 4, padx = 30, pady = 3)
+debt__ = tk.Button(dropdown_frame, text= "Check_Debt", command = Check_Debt,
+    fg="white",
+    bg = 'blue',
+    font=("Arial", 8, "bold"),
+    height=1)
+debt__.grid(row = 0, column = 5, padx = 30, pady = 3)
+## Want To add the command
+sale_data = tk.Button(dropdown_frame, text= "Check_Sale_Items",
+    fg="white",
+    bg = 'blue',
+    font=("Arial", 8, "bold"),
+    height=1)
+sale_data.grid(row = 0, column = 6, padx = 30, pady = 3)
+
+main_container = tk.Frame(root)
+main_container.pack(fill="both", expand=True)
+
+# ML FRAME
+left_panel = tk.Frame(main_container, width=600)
+left_panel.pack(side="left", fill="both", expand=True, padx=10, pady=10)
+
+#SALE FRAME
+right_panel = tk.Frame(main_container, width=450)
+right_panel.pack(side="right", fill="y", padx=10, pady=10)
+
+ml_frame = tk.LabelFrame(left_panel, text="ML Insights", font=("Arial", 12, "bold"))
+ml_frame.pack(fill="both", expand=True)
+
+ml_text = tk.Text(ml_frame, height=15, font=("Arial", 10))
+ml_text.pack(fill="both", expand=True, padx=10, pady=10)
+
+ml_text.insert("end", "• Frequently Bought Together:\n\n")
+ml_text.insert("end", "2X2 → 16X16 (Confidence: 78%)\n")
+ml_text.insert("end", "12X18 HL → 1X2 HL (Support: 65%)\n")
+
+def _on_mousewheel(event):
+    canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
+
+sale_frame = tk.LabelFrame(right_panel, text="Sale Entry", font=("Arial", 12, "bold"))
+sale_frame.pack(fill="both", expand=True)
+scroll_container = tk.Frame(sale_frame)
+scroll_container.pack(fill="both", expand=True, padx=10, pady=5)
+canvas = tk.Canvas(scroll_container)
+canvas.pack(side="left", fill="both", expand=True)
+scrollbar = tk.Scrollbar(scroll_container, orient="vertical", command=canvas.yview)
+scrollbar.pack(side="right", fill="y")
+canvas.configure(yscrollcommand=scrollbar.set)
+form_frame = tk.Frame(canvas)
+canvas.create_window((0, 0), window=form_frame, anchor="nw")
+
+form_frame.bind(
+    "<Configure>",
+    lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+)
+canvas.bind_all("<MouseWheel>", _on_mousewheel)
+customer_frame = tk.LabelFrame(form_frame, text="Customer Details", padx=10, pady=5, font=("Arial", 11, "bold"))
+customer_frame.pack(fill="x", pady=5)
+
+labels = ["Customer Name", "Total Amount", "Fare Amount",
+          "Amount Pending", "Address", "Phone Number"]
+
+customer_entries = {}
+
+for i, text in enumerate(labels):
+    tk.Label(customer_frame, text=text, width=15, anchor="w", fg = 'indigo',font=("Arial", 9, "bold")).grid(
+        row=i, column=0, pady=3, sticky="w"
+    )
+    entry = tk.Entry(customer_frame, width=25)
+    entry.grid(row=i, column=1, pady=3)
+    customer_entries[text] = entry
+
+tile_frame = tk.LabelFrame(form_frame, text="Tile Details", padx=10, pady=5, font=("Arial", 11, "bold"))
+tile_frame.pack(fill="x", pady=5)
 
 
-bottom_frame = tk.Frame(root)
-bottom_frame.pack(fill="both", expand=True)
+row_counter = 0
 
-#ML results
-ml_frame = tk.LabelFrame(bottom_frame, text="ML Insights")
-ml_frame.pack(side="left", fill="both", expand=True, padx=5, pady=5)
+tk.Label(tile_frame, text="BASIC TILES", font=("Arial", 10, "bold")).grid(
+    row=row_counter, column=0, columnspan=4, pady=5
+)
+row_counter += 1
 
-ml_text = tk.Text(ml_frame, height=10)
-ml_text.pack(fill="both", expand=True)
+basic_tiles = ["2X4", "2X2", "16X16", "20X20"]
 
-#Sale input
-sale_frame = tk.LabelFrame(bottom_frame, text="Sale Entry")
-sale_frame.pack(side="right", fill="both", expand=True, padx=5, pady=5)
+for size in basic_tiles:
+    tk.Label(tile_frame, text=f"{size} Name", width=12, fg = 'indigo', font = ("Arial",9, "bold" )).grid(
+        row=row_counter, column=0, pady=3, sticky="w"
+    )
+    name_entry = tk.Entry(tile_frame, width=18)
+    name_entry.grid(row=row_counter, column=1)
 
+    tk.Label(tile_frame, text="Qty",fg = 'indigo', font = ("Arial",9, "bold" )).grid(row=row_counter, column=2)
+    qty_entry = tk.Entry(tile_frame, width=8)
+    qty_entry.grid(row=row_counter, column=3)
 
-tk.Label(sale_frame, text="Customer_Name").grid(row=0, column=0)
-name = tk.Entry(sale_frame)
-name.grid(row=0, column=1)
+    tile_entries[size] = {"name": name_entry, "qty": qty_entry}
+    row_counter += 1
 
-tk.Label(sale_frame, text="Total_Amount").grid(row=1, column=0)
-amt = tk.Entry(sale_frame)
-amt.grid(row=1, column=1)
+types = ["HL", "L", "D", "F"]
 
-tk.Label(sale_frame, text="Fare_Amount").grid(row=2, column=0)
-fa = tk.Entry(sale_frame)
-fa.grid(row=2, column=1)
+tk.Label(tile_frame, text="12X18", font=("Arial", 10, "bold")).grid(
+    row=row_counter, column=0, columnspan=4, pady=5
+)
+row_counter += 1
 
-tk.Label(sale_frame, text="Amount_Pending").grid(row=3, column=0)
-ap = tk.Entry(sale_frame)
-ap.grid(row=3, column=1)
+for t in types:
+    tk.Label(tile_frame, text=t, width=5, fg = 'indigo', font = ("Arial",9, "bold" )).grid(row=row_counter, column=0, sticky="w")
+    name_entry = tk.Entry(tile_frame, width=18)
+    name_entry.grid(row=row_counter, column=1)
 
-tk.Label(sale_frame, text="Address").grid(row=4, column=0)
-a = tk.Entry(sale_frame)
-a.grid(row=4, column=1)
+    tk.Label(tile_frame, text="Qty", fg = 'indigo', font = ("Arial",9, "bold" )).grid(row=row_counter, column=2)
+    qty_entry = tk.Entry(tile_frame, width=8)
+    qty_entry.grid(row=row_counter, column=3)
 
-tk.Label(sale_frame, text="Phone_Number").grid(row=5, column=0)
-pn = tk.Entry(sale_frame)
-pn.grid(row=5, column=1)
+    tile_entries[f"12X18_{t}"] = {"name": name_entry, "qty": qty_entry}
+    row_counter += 1
 
-tk.Label(sale_frame, text="2X4_name").grid(row=0, column=3)
-_24_name = tk.Entry(sale_frame)
-_24_name.grid(row=0, column=4)
-tk.Label(sale_frame, text="2X4_qty").grid(row=1, column=3)
-_24_qty = tk.Entry(sale_frame)
-_24_qty.grid(row=1, column=4)
+tk.Label(tile_frame, text="1X2", font=("Arial", 10, "bold")).grid(
+    row=row_counter, column=0, columnspan=4, pady=5
+)
+row_counter += 1
 
-tk.Label(sale_frame, text="2X2_name").grid(row=2, column=3)
-_22_name = tk.Entry(sale_frame)
-_22_name.grid(row=2, column=4)
-tk.Label(sale_frame, text="2X2_qty").grid(row=3, column=3)
-_22_qty = tk.Entry(sale_frame)
-_22_qty.grid(row=3, column=4)
+for t in types:
+    tk.Label(tile_frame, text=t, width=5, fg = 'indigo', font = ("Arial",9, "bold" )).grid(row=row_counter, column=0, sticky="w")
+    name_entry = tk.Entry(tile_frame, width=18)
+    name_entry.grid(row=row_counter, column=1)
 
-tk.Label(sale_frame, text="16X16_name").grid(row=4, column=3)
-_1616_name = tk.Entry(sale_frame)
-_1616_name.grid(row=4, column=4)
-tk.Label(sale_frame, text="16X16_qty").grid(row=5, column=3)
-_1616_qty = tk.Entry(sale_frame)
-_1616_qty.grid(row=5, column=4)
+    tk.Label(tile_frame, text="Qty", fg = 'indigo', font = ("Arial",9, "bold" )).grid(row=row_counter, column=2)
+    qty_entry = tk.Entry(tile_frame, width=8)
+    qty_entry.grid(row=row_counter, column=3)
 
-tk.Label(sale_frame, text="20X20_name").grid(row=6, column=3)
-_22_name = tk.Entry(sale_frame)
-_22_name.grid(row=6, column=4)
-tk.Label(sale_frame, text="20X20_qty").grid(row=7, column=3)
-_22_qty = tk.Entry(sale_frame)
-_22_qty.grid(row=7, column=4)
+    tile_entries[f"1X2_{t}"] = {"name": name_entry, "qty": qty_entry}
+    row_counter += 1
 
-tk.Button(sale_frame, text="Add Sale").grid(row=8, column=0, columnspan=2)
-
+tk.Button(
+    sale_frame,
+    text="Add Sale",
+    bg="lightblue",
+    fg="black",
+    font=("Arial", 10, "bold"),
+    height=2, command = add_sale_record
+).pack(fill="x", padx=40, pady=10)
 
 root.mainloop()
