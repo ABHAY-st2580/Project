@@ -70,14 +70,14 @@ def clear_boxes():
 def select_record(e):
         global Tile_number_entry, hl_entry, l_entry, d_entry, f_entry, Tile_name_entry, entry, tree_
         value = combo.get()
+        selected = tree_.focus()
+        values = tree_.item(selected, 'values')
         if(value == '12X18' or value == '1X2'):
             Tile_number_entry.delete(0, 'end')
             hl_entry.delete(0, 'end')
             l_entry.delete(0, 'end')
             d_entry.delete(0, 'end')
             f_entry.delete(0, 'end')
-            selected = tree_.focus()
-            values = tree_.item(selected, 'values')
 
             Tile_number_entry.insert(0, values[0])
             hl_entry.insert(0, values[1])
@@ -88,15 +88,12 @@ def select_record(e):
             Tile_name_entry.delete(0, 'end')
             entry.delete(0, 'end')
 
-            selected = tree_.focus()
-            values = tree_.item(selected, 'values')
-
             Tile_name_entry.insert(0, values[0])
             entry.insert(0, values[1])
-
 def view(record1):
     global tree_
-    tree_.delete(*tree_.get_children())
+    if(tree_.get_children() != None):
+        tree_.delete(*tree_.get_children())
     for index, row in enumerate(record1):
         if index % 2 == 0:
             tree_.insert("", "end", values=row, tags=('evenrow',))
@@ -208,6 +205,7 @@ def update():
 def add_sale_record():
     global customer_entries, tile_entries
     sale = Sale()
+    sale_item = Sale_Items()
     customer_name = customer_entries["Customer Name"].get()
     total_amount = customer_entries["Total Amount"].get()
     fare_amount = customer_entries["Fare Amount"].get()
@@ -216,8 +214,50 @@ def add_sale_record():
     phone = customer_entries["Phone Number"].get()
 
     sale.new_sale(total_amount, customer_name, fare_amount, amount_pending, phone, address)
+    sale_id = sale.sale_id()
+    basic_tiles = ["2X4", "2X2", "16X16", "20X20"]
+    for tile in basic_tiles:
+        name = tile_entries[tile]["name"].get()
+        qty = tile_entries[tile]["qty"].get()
 
+        if name and qty:
+            sale_item.new_sale(sale_id, tile, None, name, qty)
+    types = ["HL", "L", "D", "F"]
+    for t in types:
+        number = tile_entries[f"12X18_{t}"]['name'].get()
+        qty = tile_entries[f"12X18_{t}"]['qty'].get()
+        if qty and number:
+            sale_item.new_sale(sale_id, "12X18", t, number, qty)
+    for t in types:
+        number = tile_entries[f"1X2_{t}"]['name'].get()
+        qty = tile_entries[f"1X2_{t}"]['qty'].get()
+        if qty and number:
+            sale_item.new_sale(sale_id, "1X2", t, number, qty)
     record = sale.All_sale()
+    view(record)
+
+def check_sale_items():
+    global frame, tree_
+    if (frame is not None):
+        frame.destroy()
+    if (tree_ is not None):
+        tree_.destroy()
+    if (tree is not None):
+        tree.destroy()
+
+    frame = tk.LabelFrame(root, text='SALE')
+    frame.pack(fill='x', padx=10, pady=2)
+    number_label = tk.Label(frame, text='ITEM_ID')
+    number_label.grid(row=0, column=0, padx=10, pady=10)
+    item_id = tk.Entry(frame)
+    item_id.grid(row=0, column=1, padx=10, pady=10)
+    remove_selected = tk.Button(frame, text='REMOVE_SELECTED_ONE', command=remove_selected_one,
+                                font=("Arial", 8, "bold"), bg='lightblue')
+    remove_selected.grid(row=0, column=3, padx=30, pady=10)
+    cols = ['ITEM_ID', 'SALE_ID', 'TILE_TYPE', 'HL_L_D_F', 'TILE_NAME/NUMBER', 'QUANTITY']
+    data(cols)
+    sale_item = Sale_Items()
+    record = sale_item.all_sale_items()
     view(record)
 def Check_Sale():
     global frame, tree_
@@ -230,11 +270,11 @@ def Check_Sale():
 
     frame = tk.LabelFrame(root, text='SALE')
     frame.pack(fill='x', padx=10, pady=2)
-    update_ = tk.Button(frame, text="SALE(UPDATE)", command=update, font=("Arial", 8, "bold"))
-    update_.grid(row=0, column=0, padx=30, pady=10)
-    clear_box = tk.Button(frame, text='CLEAR_DEBT', command=clear_boxes, font=("Arial", 8, "bold"))
-    clear_box.grid(row=0, column=2, padx=30, pady=10)
-    remove_selected = tk.Button(frame, text='REMOVE_SELECTED_ONE', command=remove_selected_one, font=("Arial", 8, "bold"))
+    number_label = tk.Label(frame, text='SALE_ID')
+    number_label.grid(row=0, column=0, padx=10, pady=10)
+    sale_id = tk.Entry(frame)
+    sale_id.grid(row=0, column=1, padx=10, pady=10)
+    remove_selected = tk.Button(frame, text='REMOVE_SELECTED_ONE', command=remove_selected_one, font=("Arial", 8, "bold"), bg = 'lightblue')
     remove_selected.grid(row=0, column=3, padx=30, pady=10)
     cols = ['Sale_id', 'Customer_Name', 'Date', 'Total_Amount', 'Fare_Amount', 'Amount_Pending', 'Address', 'Phone_Number']
     data(cols)
@@ -253,13 +293,13 @@ def Check_Debt():
 
     frame = tk.LabelFrame(root, text='DEBT')
     frame.pack(fill='x', padx=10, pady=2)
-    update_ = tk.Button(frame, text="DEBT(UPDATE)", command=update, font=("Arial", 8, "bold"))
-    update_.grid(row=0, column=0, padx=30, pady=10)
-    clear_box = tk.Button(frame, text='CLEAR_DEBT', command=clear_boxes, font=("Arial", 8, "bold"))
-    clear_box.grid(row=0, column=2, padx=30, pady=10)
-    remove_selected = tk.Button(frame, text='REMOVE_SELECTED_ONE', command=remove_selected_one, font=("Arial", 8, "bold"))
+    number_label = tk.Label(frame, text='CUST_ID')
+    number_label.grid(row=0, column=0, padx=10, pady=10)
+    cust_id = tk.Entry(frame)
+    cust_id.grid(row=0, column=1, padx=10, pady=10)
+    remove_selected = tk.Button(frame, text='REMOVE_SELECTED_ONE', command=remove_selected_one, font=("Arial", 8, "bold"), bg = 'lightblue')
     remove_selected.grid(row=0, column=3, padx=30, pady=10)
-    cols = ['Customer_Name', 'Amount_Pending', 'Address', 'Phone_Number']
+    cols = ['Cust_Id','Customer_Name', 'Amount_Pending', 'Address', 'Phone_Number']
     data(cols)
     debt = Debt()
     record = debt.check()
@@ -554,7 +594,7 @@ debt__ = tk.Button(dropdown_frame, text= "Check_Debt", command = Check_Debt,
     height=1)
 debt__.grid(row = 0, column = 5, padx = 30, pady = 3)
 ## Want To add the command
-sale_data = tk.Button(dropdown_frame, text= "Check_Sale_Items",
+sale_data = tk.Button(dropdown_frame, text= "Check_Sale_Items", command = check_sale_items,
     fg="white",
     bg = 'blue',
     font=("Arial", 8, "bold"),
@@ -582,8 +622,6 @@ ml_text.insert("end", "• Frequently Bought Together:\n\n")
 ml_text.insert("end", "2X2 → 16X16 (Confidence: 78%)\n")
 ml_text.insert("end", "12X18 HL → 1X2 HL (Support: 65%)\n")
 
-def _on_mousewheel(event):
-    canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
 
 sale_frame = tk.LabelFrame(right_panel, text="Sale Entry", font=("Arial", 12, "bold"))
 sale_frame.pack(fill="both", expand=True)
@@ -601,7 +639,6 @@ form_frame.bind(
     "<Configure>",
     lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
 )
-canvas.bind_all("<MouseWheel>", _on_mousewheel)
 customer_frame = tk.LabelFrame(form_frame, text="Customer Details", padx=10, pady=5, font=("Arial", 11, "bold"))
 customer_frame.pack(fill="x", pady=5)
 

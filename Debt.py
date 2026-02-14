@@ -5,7 +5,7 @@ class Debt:
         self.__cursor = self.__conn.cursor()
 
     def check(self):
-        query = 'select Customer_name, Amount_Pending, Customer_Address, Customer_phone_number from Customer_debt'
+        query = 'select * from Customer_debt'
         self.__cursor.execute(query)
         return self.__cursor.fetchall()
 

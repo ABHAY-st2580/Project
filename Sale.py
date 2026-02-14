@@ -19,17 +19,31 @@ class Sale:
     sale_id = self.__cursor.lastrowid
 
     if(pending != 0):
-      query = 'insert into Customer_debt(Customer_Address, Customer_phone_number, Amount_Pending) values (%s, %s, %s)'
-      self.__cursor.execute(query, (address, phone_number, pending))
+      query = 'insert into Customer_debt(Customer_name, Customer_Address, Customer_phone_number, Amount_Pending) values (%s, %s, %s, %s)'
+      self.__cursor.execute(query, (name, address, phone_number, pending))
       self.__conn.commit()
-
+  def sale_id(self):
+    return self.__cursor.lastrowid
 class Sale_Items:
   def __init__(self):
     self.__conn = get_connection()
     if(self.__conn is None):
       raise Exception("Database connection failed. MySQL not available.")
     self.__cursor = self.__conn.cursor()
-  
+
+  def all_sale_items(self):
+    query = 'select * from sale_items'
+    self.__cursor.execute(query)
+    return self.__cursor.fetchall()
+
+  def new_sale(self, sale_id, tile, hlldf, name, qty):
+      query = """
+                INSERT INTO sale_items
+                (sale_id, tile_type, HL_L_D_F, tile_name_number, quantity)
+                VALUES (%s, %s, %s, %s, %s)
+            """
+      self.__cursor.execute(query, (sale_id, tile, hlldf, name, qty))
+      self.__conn.commit()
   def update_in_stock(self, Tile_number = 0, Tile_name = "", Tile_size = 0, qty = 0, hl_qty = 0, l_qty = 0, d_qty = 0, f_qty = 0):
     if(Tile_size == 1218):
         query = "update _12_18_ set HL_qty = HL_qty - %s where Tile_number = %s and HL_qty >= %s"
