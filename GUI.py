@@ -7,7 +7,10 @@ from Stock import _20_20_
 from Sale import Sale_Items, Sale
 from Debt import Debt
 import tkinter as tk
+import tkinter.font as tkfont
 from tkinter import ttk, messagebox
+from ML_logic_FP_growth import get_data, encode_transactions, run_fpgrowth
+from Sale_Analytics import show_sales_analytics
 
 frame = None
 tree_ = None
@@ -18,8 +21,46 @@ update_items = Sale_Items()
 tile_entries = {}
 
 root = tk.Tk()
+root.tk.call('tk', 'scaling', 1.3)
+default_font = tkfont.nametofont("TkDefaultFont")
+default_font.configure(family="Segoe UI", size=10)
 root.title("STOCK_MANAGER_APP")
 root.geometry("1000x600")
+
+
+def format_rules_for_gui(rules):
+    if rules is None or rules.empty:
+        return "No strong patterns found in last 2 months."
+
+    rules = rules.sort_values(by="confidence", ascending=False)
+    output_text = "====== ML INSIGHTS (Last 2 Months) ======\n\n"
+
+    top_rules = rules.head(10)   # show top 10
+
+    for index, row in top_rules.iterrows():
+        antecedent = ", ".join(list(row['antecedents']))
+        consequent = ", ".join(list(row['consequents']))
+        support = round(row['support'], 2)
+        confidence = round(row['confidence'], 2)
+        lift = round(row['lift'], 2)
+        output_text += (
+            f"Customers buying [{antecedent}] also buy [{consequent}]\n"
+            f"Support: {support*100}\n"
+            f"Confidence: {confidence*100}\n"
+            f"------------------------------------------\n"
+        )
+    return output_text
+
+def generate_fp_growth():
+    transactions = get_data()
+    if len(transactions) == 0:
+        print("NO RECENT SALES DATA AVAILABLE")
+        return None, None
+
+    encoded_df = encode_transactions(transactions)
+    item_sets, rules = run_fpgrowth(encoded_df, min_support=0.2, min_confidence=0.5)
+    return item_sets, rules
+
 
 
 def remove_selected_one():
@@ -578,49 +619,104 @@ combo.grid(row = 0, column= 1, padx = 10, pady = 10)
 button = tk.Button(dropdown_frame, text= "Check_Stock", command = Select_tile_type,
     fg="white",
     bg = 'blue',
-    font=("Arial", 8, "bold"),
+    font=("Arial", 9, "bold"),
     height=1)
 button.grid(row = 0, column = 3, padx = 30, pady = 3)
 sale__ = tk.Button(dropdown_frame, text= "Check_Sale", command = Check_Sale,
     fg="white",
     bg = 'blue',
-    font=("Arial", 8, "bold"),
+    font=("Arial", 9, "bold"),
     height=1)
 sale__.grid(row = 0, column = 4, padx = 30, pady = 3)
 debt__ = tk.Button(dropdown_frame, text= "Check_Debt", command = Check_Debt,
     fg="white",
     bg = 'blue',
-    font=("Arial", 8, "bold"),
+    font=("Arial", 9, "bold"),
     height=1)
 debt__.grid(row = 0, column = 5, padx = 30, pady = 3)
 ## Want To add the command
 sale_data = tk.Button(dropdown_frame, text= "Check_Sale_Items", command = check_sale_items,
     fg="white",
     bg = 'blue',
-    font=("Arial", 8, "bold"),
+    font=("Arial", 9, "bold"),
     height=1)
 sale_data.grid(row = 0, column = 6, padx = 30, pady = 3)
 
 main_container = tk.Frame(root)
 main_container.pack(fill="both", expand=True)
 
-# ML FRAME
-left_panel = tk.Frame(main_container, width=600)
-left_panel.pack(side="left", fill="both", expand=True, padx=10, pady=10)
 
 #SALE FRAME
 right_panel = tk.Frame(main_container, width=450)
 right_panel.pack(side="right", fill="y", padx=10, pady=10)
 
-ml_frame = tk.LabelFrame(left_panel, text="ML Insights", font=("Arial", 12, "bold"))
-ml_frame.pack(fill="both", expand=True)
 
-ml_text = tk.Text(ml_frame, height=15, font=("Arial", 10))
-ml_text.pack(fill="both", expand=True, padx=10, pady=10)
+# ML FRAME
+left_panel = tk.Frame(main_container, width=600)
+left_panel.pack(side="left", fill="both", expand=True, padx=10, pady=10)
 
-ml_text.insert("end", "• Frequently Bought Together:\n\n")
-ml_text.insert("end", "2X2 → 16X16 (Confidence: 78%)\n")
-ml_text.insert("end", "12X18 HL → 1X2 HL (Support: 65%)\n")
+ml_frame = tk.LabelFrame(
+    left_panel,
+    text="ML Insights Dashboard",
+    font=("Arial", 13, "bold"),
+    bg="#f0f4f8",
+    fg="#1f4e79",
+    bd=3,
+    relief="ridge"
+)
+ml_frame.pack(fill="both", expand=True, padx=10, pady=10)
+ml_notebook = ttk.Notebook(ml_frame)
+ml_notebook.pack(fill="both", expand=True, padx=5, pady=5)
+tab_rules = tk.Frame(ml_notebook, bg="#f0f4f8")
+tab_analytics = tk.Frame(ml_notebook, bg="#f0f4f8")
+ml_notebook.add(tab_rules, text="Association Rules")
+ml_notebook.add(tab_analytics, text="Sales Analytics")
+ml_text = tk.Text(
+    tab_rules,
+    height=15,
+    font=("Consolas", 10),
+    bg="#ffffff",
+    fg="#2c3e50",
+    wrap="word",
+    bd=0
+)
+ml_text.pack(fill="both", expand=True, padx=15, pady=15)
+ml_text.tag_config("title", foreground="#1f4e79", font=("Arial", 12, "bold"))
+ml_text.tag_config("rule", foreground="#145a32")
+ml_text.tag_config("support", foreground="#6c3483")
+ml_text.tag_config("confidence_low", foreground="#ca6f1e")
+ml_text.tag_config("confidence_high", foreground="#1e8449", font=("Arial", 10, "bold"))
+ml_text.tag_config("alert", foreground="#c0392b", font=("Arial", 10, "bold"))
+ml_text.tag_config("separator", foreground="#bdc3c7")
+ml_text.delete("1.0", "end")
+ml_text.insert("end", "\nFrequently Bought Together (Last 2 Months)\n\n", "title")
+
+items, rules = generate_fp_growth()
+
+ml_text.insert("end", f"Total Rules Generated: {len(rules)}\n\n", "title")
+
+for index, row in rules.iterrows():
+    antecedent = list(row['antecedents'])
+    consequent = list(row['consequents'])
+    support = round(row['support'] * 100, 1)
+    confidence = round(row['confidence'] * 100, 1)
+
+    ml_text.insert("end", "Customers buying ", "rule")
+    ml_text.insert("end", f"{antecedent}", "rule")
+    ml_text.insert("end", " also buy ", "rule")
+    ml_text.insert("end", f"{consequent}\n", "rule")
+
+    ml_text.insert("end", f"   • Support: {support}%\n", "support")
+
+    if confidence >= 80:
+        ml_text.insert("end", f"   • Confidence: {confidence}%\n", "confidence_high")
+        ml_text.insert("end", "      Strong Buying Pattern Detected!\n", "alert")
+    else:
+        ml_text.insert("end", f"   • Confidence: {confidence}%\n", "confidence_low")
+
+    ml_text.insert("end", "\n" + "-"*60 + "\n", "separator")
+
+# show_sales_analytics(tab_analytics)
 
 
 sale_frame = tk.LabelFrame(right_panel, text="Sale Entry", font=("Arial", 12, "bold"))
