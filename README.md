@@ -116,13 +116,8 @@ python main.py
 
 ## 📷 Application Screenshots
 
-Add screenshots of your GUI here.
+<img width="1919" height="1129" alt="image" src="https://github.com/user-attachments/assets/f7c21349-802b-4d20-824a-26b631d37792" />
 
-```
-screenshots/dashboard.png
-screenshots/sales_entry.png
-screenshots/ml_insights.png
-```
 
 ---
 
