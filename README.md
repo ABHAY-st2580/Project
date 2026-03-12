@@ -4,6 +4,7 @@ A desktop-based stock and sales management system designed for tile shops to eff
 The system also integrates data mining techniques to generate business insights from sales data.
 
 #Features
+
 1.Inventory Management
 Track tile stock levels and manage product details.
 
