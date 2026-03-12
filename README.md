@@ -5,7 +5,7 @@ The system also integrates data mining techniques to generate business insights 
 
 #Features
 
-1.Inventory Management
+1. Inventory Management
 Track tile stock levels and manage product details.
 
 2. Sales Entry System
