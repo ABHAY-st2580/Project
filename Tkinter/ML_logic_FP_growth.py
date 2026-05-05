@@ -13,12 +13,12 @@ def get_data():
            si.tile_name_number
     FROM Sale s
     JOIN Sale_Items si ON s.sale_id = si.sale_id
-    WHERE s.Date_ >= DATE_SUB(CURDATE(), INTERVAL 2 MONTH)
+    WHERE s.Date_ >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH)
     '''
 
     df = pd.read_sql(query, conn)
     conn.close()
-
+    df = df.fillna('')   # replace NaN with empty string
     df['item'] = (
             df['tile_type'].astype(str) + "_" +
             df['tile_name_number'].astype(str) + "_" +
@@ -49,4 +49,7 @@ def run_fpgrowth(encoded_df, min_support=0.2, min_confidence=0.6):
     )
 
     return frequent_itemsets, rules
+
+print(get_data())
+print(encode_transactions(get_data()))
 
