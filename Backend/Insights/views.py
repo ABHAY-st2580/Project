@@ -6,6 +6,8 @@ import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from Sale.models import Sale, SaleItem
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 
 
 
@@ -55,6 +57,7 @@ def run_fpgrowth(encoded_df, min_support=0.2, min_confidence=0.6):
 
     return frequent_itemsets, rules
 
+@permission_classes([IsAuthenticated])
 @csrf_exempt
 def get_recommendations(request):
   if request.method == "POST":

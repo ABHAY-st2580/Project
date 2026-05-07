@@ -26,5 +26,7 @@ urlpatterns = [
     path('', home, name='home'),
     path('tiles/', include('Tiles.urls'), name='tiles'),
     path('sale/', include('Sale.urls'), name='sale'),
-    path('insights/', include('Insights.urls'), name = 'insights')
+    path('insights/', include('Insights.urls'), name = 'insights'),
+    path('auth/', include('auth_api.urls'), name = 'auth'),
+    
 ]

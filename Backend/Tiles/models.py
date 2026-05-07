@@ -1,7 +1,8 @@
 from django.db import models
-
+from auth_api.models import Shop
 
 class Tile(models.Model):
+    shop = models.ForeignKey(Shop, on_delete=models.CASCADE)
     tile_id = models.AutoField(primary_key=True)
     tile_name_number = models.CharField(max_length=100)
     tile_type = models.CharField(max_length=50)

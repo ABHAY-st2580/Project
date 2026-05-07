@@ -1,6 +1,8 @@
 from django.db import models
+from auth_api.models import Shop
 
 class Sale(models.Model):
+    shop = models.ForeignKey(Shop, on_delete=models.CASCADE)
     sale_id = models.AutoField(primary_key=True)
     customer_name = models.CharField(max_length=100)
     date = models.DateField(auto_now_add=True)
