@@ -22,7 +22,7 @@ class SaleItem(models.Model):
 
     tile_type2 = models.CharField(
         max_length=10,
-        null=True,
+        default='AT',
         blank=True,
         choices=[('HL','HL'), ('L','L'), ('D','D'), ('F','F'), ('AT', 'AT')]
     )

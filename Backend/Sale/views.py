@@ -1,44 +1,113 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.db import transaction
 from .models import Sale, SaleItem
+from Tiles.models import Tile
 import json
 
 
 @csrf_exempt
 def add_sale(request):
-  if request.method == "POST":
+
+    if request.method != "POST":
+        return JsonResponse({"error": "Only POST allowed"}, status=405)
+
     try:
-      try:
         data = json.loads(request.body)
+
         cust_name = data.get("customer_name")
         amt = data.get("amount")
         rem_amt = data.get("remaining_amount")
         address = data.get("address")
         phone = data.get("phone_number")
-      except json.JSONDecodeError:
-        return JsonResponse({"error": "Invalid JSON data"})
+        items = data.get("items", [])
 
-      sale = Sale.objects.create(
-        customer_name = cust_name,
-        amount = amt,
-        remaining_amount = rem_amt,
-        address = address,
-        phone_number = phone
-      )
+        if not items:
+            return JsonResponse({"error": "No items provided"}, status=400)
 
-      items = data.get("items", [])
+        with transaction.atomic():
 
-      for item in items:
-        SaleItem.objects.create(
-            sale = sale,
-            tile_type = item.get("tile_type"),
-            tile_name_number = item.get("tile_name_number"),
-            tile_type2 = item.get("tile_type2"),
-            quantity = item.get("quantity")
-        )
-      return JsonResponse({"message": "Sale added successfully", "sale_id": sale.sale_id})
+            sale = Sale.objects.create(
+                customer_name=cust_name,
+                amount=amt,
+                remaining_amount=rem_amt,
+                address=address,
+                phone_number=phone
+            )
+
+            for item in items:
+
+                tile_type = item.get("tile_type")
+                tile_name_number = item.get("tile_name_number")
+                tile_type2 = item.get("tile_type2")
+                qty = item.get("quantity")
+
+                try:
+                    tile = Tile.objects.get(
+                        tile_type=tile_type,
+                        tile_type2=tile_type2,
+                        tile_name_number=tile_name_number
+                    )
+                except Tile.DoesNotExist:
+                    raise Exception(f"Tile not found: {tile_type}-{tile_name_number}-{tile_type2}")
+
+                if tile.stock_quantity < qty:
+                    tile.stock_quantity = 0
+                    raise Exception(f"Insufficient stock for {tile_type} {tile_name_number} ({tile_type2}). Available: {tile.stock_quantity}, Requested: {qty}")
+                else:
+                    tile.stock_quantity -= qty
+                
+                tile.save()
+                SaleItem.objects.create(
+                    sale=sale,
+                    tile_type=tile_type,
+                    tile_name_number=tile_name_number,
+                    tile_type2=tile_type2,
+                    quantity=qty
+                )
+
+        return JsonResponse({
+            "message": "Sale added successfully",
+            "sale_id": sale.sale_id
+        }, status=201)
+
     except Exception as e:
-      return JsonResponse({"error": str(e)})
-  else:
-    return JsonResponse({"error": "Not a post request"})
+        return JsonResponse({"error": str(e)}, status=400)
+
+@csrf_exempt
+def get_sales(request):
+    try:
+        sales = Sale.objects.all()
+        data = []
+        for sale in sales:
+            items = SaleItem.objects.filter(sale=sale)
+
+            item_list = []
+            for item in items:
+                item_list.append({
+                    "tile_type": item.tile_type,
+                    "tile_name_number": item.tile_name_number,
+                    "HL_L_D_F": item.tile_type2,
+                    "quantity": item.quantity
+                })
+
+            data.append({
+                "sale_id": sale.sale_id,
+                "customer_name": sale.customer_name,
+                "amount": sale.amount,
+                "remaining_amount": sale.remaining_amount,
+                "date": str(sale.date),
+                "address": sale.address,
+                "phone_number": sale.phone_number,
+                "items": item_list
+            })
+
+        return JsonResponse({"sales": data})
+
+    except Exception as e:
+        return JsonResponse({"error": str(e)})
+
+
+
+
