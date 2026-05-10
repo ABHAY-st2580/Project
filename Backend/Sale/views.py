@@ -102,7 +102,7 @@ def get_sales(request):
         sales = Sale.objects.filter(shop = shop)
         data = []
         for sale in sales:
-            items = SaleItem.objects.filter(sale=sale)
+            items = SaleItem.objects.filter(sale=sale).order_by('-date')
 
             item_list = []
             for item in items:
@@ -124,7 +124,7 @@ def get_sales(request):
                 "items": item_list
             })
 
-        return JsonResponse({"sales": data})
+        return JsonResponse(data, safe=False)
 
     except Exception as e:
         return JsonResponse({"error": str(e)})
