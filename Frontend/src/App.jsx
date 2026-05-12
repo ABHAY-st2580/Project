@@ -4,6 +4,7 @@ import Sidebar from './components/Sidebar'
 import Navbar from './components/Navbar'
 import SalePage from './pages/sale';
 import TilePage from './pages/tilepage';
+import TodayPage from './pages/today';
 import ManualPage from './pages/manual';
 import RecommendationPage from './pages/dashboard';
 import Home from './pages/home';
@@ -27,6 +28,7 @@ function App() {
               {currentPage == 'sales' && <SalePage />}
               {currentPage == 'tiles' && <TilePage />}
               {currentPage == 'manual' && <ManualPage />}
+              {currentPage == 'today' && <TodayPage />}
               {currentPage == 'login' && (
                 <AuthModal isOpen={true} onClose={() => setCurrentPage("home")} />
               )}

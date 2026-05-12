@@ -43,5 +43,4 @@
   .tag-green {
     @apply text-green-600 text-sm px-2 py-1 rounded font-light;
   }
-
 }

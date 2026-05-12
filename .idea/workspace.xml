@@ -2,18 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="66f0f876-46b4-49d5-bba7-7d579a21c3bd" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Backend/Insights/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/Insights/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Backend/Insights/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/Insights/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/Sale/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/Sale/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Frontend/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/Frontend/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Frontend/public/tile.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/Frontend/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Frontend/src/assets/tileimage.jpg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Frontend/src/components/Navbar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/Frontend/src/components/Navbar.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Frontend/src/components/Sidebar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/Frontend/src/components/Sidebar.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Frontend/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/Frontend/src/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Frontend/src/pages/home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/Frontend/src/pages/home.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Frontend/src/pages/sale.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/Frontend/src/pages/sale.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/src/pages/dashboard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/Frontend/src/pages/dashboard.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

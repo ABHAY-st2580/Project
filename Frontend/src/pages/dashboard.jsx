@@ -135,14 +135,14 @@ export default function RecommendationDashboard() {
           {/* 🔷 TOP CURRENT */}
           <div className="card">
             <h2 className="text-lg text-gray-400 mb-3">
-              Top Tiles (Current Month)
+              <u>Top Tiles (Current Month)</u>
             </h2>
 
             {comparison.top_tiles_current.length === 0 ? (
-              <p className="text-lg text-gray-500">No data</p>
+              <p className="text-sm text-gray-500">No data</p>
             ) : (
               comparison.top_tiles_current.map((tile, i) => (
-                <div key={i} className="flex justify-between text-lg mb-1">
+                <div key={i} className="flex justify-between text-sm mb-1">
                   <span>{tile[0]}</span>
                   <span className="text-blue-400">{tile[1]}</span>
                 </div>
@@ -153,14 +153,14 @@ export default function RecommendationDashboard() {
           {/* 🔷 TOP PREVIOUS */}
           <div className="card">
             <h2 className="text-lg text-gray-400 mb-3">
-              Top Tiles (Previous Month)
+              <u>Top Tiles (Previous Month)</u>
             </h2>
 
             {comparison.top_tiles_previous.length === 0 ? (
-              <p className="text-lg text-gray-500">No data</p>
+              <p className="text-sm text-gray-500">No data</p>
             ) : (
               comparison.top_tiles_previous.map((tile, i) => (
-                <div key={i} className="flex justify-between text-lg mb-1">
+                <div key={i} className="flex justify-between text-sm mb-1">
                   <span>{tile[0]}</span>
                   <span className="text-gray-400">{tile[1]}</span>
                 </div>
@@ -175,10 +175,10 @@ export default function RecommendationDashboard() {
             </h2>
 
             {comparison.trending_up.length === 0 ? (
-              <p className="text-lg text-gray-500">No data</p>
+              <p className="text-sm text-gray-500">No data</p>
             ) : (
               comparison.trending_up.map((tile, i) => (
-                <div key={i} className="flex justify-between text-lg mb-1">
+                <div key={i} className="flex justify-between text-sm mb-1">
                   <span>{tile.tile}</span>
                   <span className="text-green-400">+{tile.increase}</span>
                 </div>
@@ -193,10 +193,10 @@ export default function RecommendationDashboard() {
             </h2>
 
             {comparison.trending_down.length === 0 ? (
-              <p className="text-lg text-gray-500">No data</p>
+              <p className="text-sm text-gray-500">No data</p>
             ) : (
               comparison.trending_down.map((tile, i) => (
-                <div key={i} className="flex justify-between text-lg mb-1">
+                <div key={i} className="flex justify-between text-sm mb-1">
                   <span>{tile.tile}</span>
                   <span className="text-red-400">-{tile.decrease}</span>
                 </div>

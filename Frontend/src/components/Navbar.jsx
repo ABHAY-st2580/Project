@@ -51,7 +51,16 @@ function Navbar({ currentPage, setCurrentPage }) {
           >
             Dashboard
           </button>
-
+            <button
+            onClick={() => setCurrentPage("today")}
+            className={`transition ${
+              currentPage === "today"
+                ? "text-blue-400"
+                : "hover:text-blue-400"
+            }`}
+          >
+            Today
+          </button>
           {/* TILES */}
           <button
             onClick={() => setCurrentPage("tiles")}

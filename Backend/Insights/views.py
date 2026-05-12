@@ -142,7 +142,7 @@ def inventory_alerts(request):
 
         data = []
         for tile in tiles:
-            if tile.stock_quantity < 100:
+            if tile.stock_quantity <= 10:
                 data.append({
                     "tile_name_number": tile.tile_name_number,
                     "tile_type": tile.tile_type,
@@ -176,7 +176,12 @@ def Today(request):
                 "amount": sale.amount,
                 "address": sale.address,
                 "phone_number": sale.phone_number,
-                "items": [{"tile_type": item.tile_type, "tile_name_number": item.tile_name_number, "quantity": item.quantity} for item in items]
+                "items": [{
+                    "tile_type": item.tile_type, 
+                    "tile_name_number": item.tile_name_number, 
+                    "tile_type2": item.tile_type2,
+                    "quantity": item.quantity}
+                    for item in items]
             })
             total_amt += sale.amount
             order += 1
