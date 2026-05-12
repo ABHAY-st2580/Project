@@ -9,7 +9,7 @@ function Home({ setCurrentPage }) {
   return (
     <div className="text-white font-light">
 
-      {/* 🔥 HERO SECTION */}
+      {/* HERO SECTION */}
 
       <section className="min-h-[80vh] flex items-center justify-center px-6 bg-gradient-to-b from-[#0f172a] to-[#1e293b]">
 
@@ -115,9 +115,12 @@ function Home({ setCurrentPage }) {
           
         </div>
         <div className="text-center mt-10">
-          <p className="text-gray-300">
-            <a href=""><b>Check more...</b></a>
-          </p>
+          <button
+            onClick={() => setCurrentPage('manual')}
+            className="text-amber-300 hover:text-amber-700"
+          >
+            View User Manual...
+          </button>
         </div>
       </section>
       <hr className="border-gray-700 my-2" />
@@ -137,7 +140,7 @@ function Home({ setCurrentPage }) {
 
           <button
           onClick={() => setCurrentPage(token ? "dashboard" : "login")}
-          className="bg-white text-black px-6 py-2 rounded-lg font-light hover:bg-gray-200 transition">
+          className="bg-white text-black px-4 py-1 rounded-lg font-light hover:bg-gray-400 transition">
             {token ? "Go to Dashboard" : "Create Account"}
           </button>
 

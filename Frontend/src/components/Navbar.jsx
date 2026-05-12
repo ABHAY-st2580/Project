@@ -15,9 +15,16 @@ function Navbar({ currentPage, setCurrentPage }) {
   return (
     <nav className="bg-[#131212] text-white shadow-md font-extralight">
       <div className="max-w-7xl mx-auto px-6 py-2 flex items-center justify-between border-1 border-blue-900">
-
+        <div className="flex items-center gap-2">
+          <img
+            src="/tileicon.png"
+            alt="TileTracker Logo"
+            className="w-8 h-8"
+          />
+          <h1 className="text-2xl font-semibold">TileTracker</h1>
+        </div>
         {/* Logo */}
-        <h1 className="text-2xl font-semibold">TileTracker</h1>
+
 
         {/* Menu */}
         <div className="hidden md:flex space-x-8 items-center text-lg">
@@ -67,6 +74,16 @@ function Navbar({ currentPage, setCurrentPage }) {
             }`}
           >
             Sales
+          </button>
+          <button
+            onClick={() => setCurrentPage("manual")}
+            className={`transition ${
+              currentPage === "manual"
+                ? "text-blue-400"
+                : "hover:text-blue-400"
+            }`}
+          >
+            Manual
           </button>
 
         </div>

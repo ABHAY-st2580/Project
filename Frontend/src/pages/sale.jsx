@@ -60,16 +60,52 @@ function SalePage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const payload = {
+      customer_name: form.customer_name,
+      amount: Number(form.amount),
+      remaining_amount: Number(form.remaining_amount),
+      address: form.address,
+      phone_number: form.phone_number,
+      items: items.map((item) => ({
+        tile_type: item.tile_type,
+        tile_type2: item.tile_type2,
+        tile_name_number: item.tile_name_number,
+        quantity: Number(item.quantity),
+      })),
+    };
+
+    // 🔥 SHOW JSON IN CONSOLE
+    console.log("🔥 JSON SENT TO BACKEND:");
+    console.log(JSON.stringify(payload, null, 2));
+
     try {
-      await axios.post("http://127.0.0.1:8000/add_sale/", {
-        ...form,
-        items: items,
-      });
+      const token = localStorage.getItem("token");
+
+      await axios.post(
+        "http://127.0.0.1:8000/sale/add_sale/",
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       alert("Sale Added");
+
       setItems([]);
+      setForm({
+        customer_name: "",
+        amount: "",
+        remaining_amount: "",
+        address: "",
+        phone_number: "",
+      });
+
     } catch (err) {
       alert("Error");
+      console.error(err.response?.data);
     }
   };
 
@@ -79,7 +115,7 @@ function SalePage() {
         const token = localStorage.getItem("token");
 
         const res = await axios.get(
-          "http://127.0.0.1:8000/sales/get_sales/",
+          "http://127.0.0.1:8000/sale/get_sales/",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -97,18 +133,18 @@ function SalePage() {
   }, []);
 
   return (
-    <div className="p-4 text-sm text-white bg-[#020817] min-h-screen">
+    <div className="p-4 text-sm text-white bg-[#020617] min-h-screen">
 
       <h1 className="text-lg mb-4">Add Sale</h1>
 
       {/* Customer */}
       <div className="grid grid-cols-2 gap-3 mb-4">
-        <input name="customer_name" placeholder="Customer"
+        <input name="customer_name" placeholder="Customer Name"
           value = {form.customer_name}
           onChange={handleChange}
           className="p-2 bg-[#0f172a] rounded" />
 
-        <input name="phone_number" placeholder="Phone"
+        <input name="phone_number" placeholder="Phone Number"
           value = {form.phone_number}
           onChange={handleChange}
           className="p-2 bg-[#0f172a] rounded" />
@@ -193,34 +229,63 @@ function SalePage() {
       >
         Submit Sale
       </button>
+      <pre className="mt-4 bg-[#0f172a] p-3 rounded text-xs text-green-400 overflow-auto">
+        {JSON.stringify({
+          ...form,
+          items: items
+        }, null, 2)}
+      </pre>
 
+      <div className="mt-10">
+        <h2 className="text-lg font-semibold mb-4 text-white">Recent Sales</h2>
 
-      <div className="mt-8">
-        <h2 className="text-lg font-semibold mb-3">Recent Sales</h2>
-
-        <div className="overflow-x-auto border border-gray-700 rounded-lg">
+        <div className="overflow-x-auto rounded-lg border border-gray-700">
           <table className="w-full text-sm text-gray-300">
 
-            <thead className="bg-[#1e293b] text-white">
-              <tr>
-                <th className="px-4 py-2">Date</th>
-                <th className="px-4 py-2">Customer</th>
-                <th className="px-4 py-2">Amount</th>
-                <th className="px-4 py-2">Remaining</th>
-                <th className="px-4 py-2">Address</th>
-                <th className="px-4 py-2">Phone</th>
+            {/* HEADER */}
+            <thead className="bg-[#1e293b] text-gray-200">
+              <tr className="text-left">
+                <th className="px-5 py-3 border-r border-gray-700">Date</th>
+                <th className="px-5 py-3 border-r border-gray-700">Customer</th>
+                <th className="px-5 py-3 border-r border-gray-700 text-right">Amount</th>
+                <th className="px-5 py-3 border-r border-gray-700 text-right">Remaining</th>
+                <th className="px-5 py-3 border-r border-gray-700">Address</th>
+                <th className="px-5 py-3 text-right">Phone</th>
               </tr>
             </thead>
 
+            {/* BODY */}
             <tbody>
-              {recentSales.map((sale) => (
-                <tr key={sale.sale_id} className="border-t border-gray-700 hover:bg-[#1e293b]">
-                  <td className="px-4 py-2">{sale.date}</td>
-                  <td className="px-4 py-2">{sale.customer_name}</td>
-                  <td className="px-4 py-2">₹ {sale.amount}</td>
-                  <td className="px-4 py-2">₹ {sale.remaining_amount}</td>
-                  <td className="px-4 py-2">{sale.address}</td>
-                  <td className="px-4 py-2">{sale.phone_number}</td>
+              {recentSales?.slice(0, 7).map((sale, index) => (
+                <tr
+                  key={sale.sale_id}
+                  className={`border-t border-gray-700 transition ${
+                    index % 2 === 0 ? "bg-[#020617]" : "bg-[#0f172a]"
+                  } hover:bg-[#1e293b]`}
+                >
+                  <td className="px-5 py-3 border-r border-gray-700">
+                    {sale.date?.slice(0, 10)}
+                  </td>
+
+                  <td className="px-5 py-3 border-r border-gray-700 font-medium text-white">
+                    {sale.customer_name}
+                  </td>
+
+                  <td className="px-5 py-3 border-r border-gray-700 text-right text-green-400">
+                    ₹ {sale.amount}
+                  </td>
+
+                  <td className="px-5 py-3 border-r border-gray-700 text-right text-yellow-400">
+                    ₹ {sale.remaining_amount}
+                  </td>
+
+                  <td className="px-5 py-3 border-r border-gray-700 truncate max-w-[200px]">
+                    {sale.address}
+                  </td>
+
+                  <td className="px-5 py-3 text-right">
+                    {sale.phone_number}
+                  </td>
                 </tr>
               ))}
             </tbody>

@@ -1,1 +1,47 @@
 @import "tailwindcss";
+
+
+/* @layer components {
+
+  .input-dark {
+    @apply bg-[#020617] border border-gray-700 text-white p-2 rounded w-full focus:outline-none focus:border-blue-500 font-extralight;
+  }
+
+  .btn-blue {
+    @apply bg-blue-600 px-4 py-2 rounded hover:bg-blue-700 font-extralight;
+  }
+
+} */
+
+@layer pages {
+
+  .input-dark {
+    @apply bg-[#020617] border border-gray-700 text-gray-300 text-sm px-3 py-2 rounded-md w-full 
+    placeholder-gray-500 focus:outline-none focus:border-blue-500;
+  }
+
+  .btn-blue {
+    @apply bg-blue-600 text-sm px-4 py-2 rounded-md hover:bg-blue-950;
+  }
+
+}
+
+@layer pages {
+
+  .card {
+    @apply bg-[#0f172a] border border-gray-800 p-4 rounded-xl;
+  }
+
+  .btn-blue {
+    @apply bg-blue-600 px-4 py-2 text-sm rounded hover:bg-blue-950;
+  }
+
+  .tag-blue {
+    @apply text-white text-sm px-2 py-1 rounded font-light;
+  }
+
+  .tag-green {
+    @apply text-green-600 text-sm px-2 py-1 rounded font-light;
+  }
+
+}

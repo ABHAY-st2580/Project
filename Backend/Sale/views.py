@@ -64,16 +64,16 @@ def add_sale(request):
                         tile_type2=tile_type2,
                         tile_name_number=tile_name_number
                     )
+                    if tile.stock_quantity < qty:
+                        tile.stock_quantity = 0
+                        raise Exception(f"Insufficient stock for {tile_type} {tile_name_number} ({tile_type2}). Available: {tile.stock_quantity}, Requested: {qty}")
+                    else:
+                        tile.stock_quantity -= qty
+                    
+                    tile.save()
                 except Tile.DoesNotExist:
-                    raise Exception(f"Tile not found: {tile_type}-{tile_name_number}-{tile_type2}")
+                    pass
 
-                if tile.stock_quantity < qty:
-                    tile.stock_quantity = 0
-                    raise Exception(f"Insufficient stock for {tile_type} {tile_name_number} ({tile_type2}). Available: {tile.stock_quantity}, Requested: {qty}")
-                else:
-                    tile.stock_quantity -= qty
-                
-                tile.save()
                 SaleItem.objects.create(
                     sale=sale,
                     tile_type=tile_type,
@@ -102,7 +102,7 @@ def get_sales(request):
         sales = Sale.objects.filter(shop = shop)
         data = []
         for sale in sales:
-            items = SaleItem.objects.filter(sale=sale).order_by('-date')
+            items = SaleItem.objects.filter(sale=sale)[:7]
 
             item_list = []
             for item in items:
