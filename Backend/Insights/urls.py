@@ -7,4 +7,5 @@ urlpatterns = [
   path('inventory-alerts/', views.inventory_alerts, name='inventory_alerts'),
   path('today/', views.Today, name='today'),
   path('sales-comparison/', views.sales_comparison, name='sales_comparison'),
+  path('pay-debt/<int:sale_id>', views.pay_debt, name = 'paydebt')
 ]

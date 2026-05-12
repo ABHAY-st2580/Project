@@ -121,12 +121,9 @@ function Navbar({ currentPage, setCurrentPage }) {
               {/* Dropdown */}
               <div className="absolute right-0 mt-2 w-40 bg-[#2f3031] rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition duration-200">
 
-                <div className="px-4 py-2 hover:bg-[#3a3b3c] cursor-pointer">
+                <div className="px-4 py-2 hover:bg-[#3a3b3c] cursor-pointer"
+                    onClick = {() => setCurrentPage("profile")}>
                   Profile
-                </div>
-
-                <div className="px-4 py-2 hover:bg-[#3a3b3c] cursor-pointer">
-                  Settings
                 </div>
 
                 <div

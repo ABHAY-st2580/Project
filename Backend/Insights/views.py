@@ -117,6 +117,7 @@ def debt(request):
         for sale in sales:
             if sale.remaining_amount > 0:
                 data.append({
+                    "sale_id": sale.sale_id,
                     "customer_name": sale.customer_name,
                     "remaining_amount": sale.remaining_amount,
                     "date": str(sale.date),
@@ -127,6 +128,21 @@ def debt(request):
 
     except Exception as e:
         return JsonResponse({"error": str(e)})
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+@csrf_exempt
+def pay_debt(request, sale_id):
+    try:
+        sale = Sale.objects.get(sale_id=sale_id)
+
+        sale.remaining_amount = 0
+        sale.save()
+
+        return JsonResponse({"message": "Marked as paid"})
+
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
 
 
 @api_view(['GET'])

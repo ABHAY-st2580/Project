@@ -37,7 +37,7 @@ function AuthModal({ isOpen, onClose }) {
       });
 
       localStorage.setItem("token", res.data.access);
-      localStorage.setItem("username", form.username); // ✅ store this
+      localStorage.setItem("username", form.username);
 
       alert("Login Successful");
       onClose();
@@ -122,7 +122,7 @@ function AuthModal({ isOpen, onClose }) {
           )}
 
           {/* Submit Button */}
-          <button className="w-full bg-blue-600 py-2 rounded hover:bg-blue-700"
+          <button className="w-full bg-blue-600 py-2 rounded hover:bg-blue-950"
             onClick={isLogin ? handleLogin : handleRegister}
           >
             {isLogin ? "Login" : "Register"}

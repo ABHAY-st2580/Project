@@ -9,6 +9,34 @@ function Sidebar() {
   const isLoggedIn = localStorage.getItem("token");
 
   const token = localStorage.getItem("token")
+  const handleamount = async (saleId) => {
+    try {
+      const res = await fetch(
+        `http://127.0.0.1:8000/insights/pay-debt/${saleId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!res.ok) {
+        const text = await res.text();
+        console.error("Server Error:", text);
+        return;
+      }
+
+      const data = await res.json();
+      console.log("Paid:", data);
+
+      fetchdebt();
+
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const fetchtoday = async () => {
     const res = await fetch("http://127.0.0.1:8000/insights/today/", {
@@ -60,7 +88,7 @@ function Sidebar() {
 
   if (!isLoggedIn) {
     return (
-      <div className="w-72 bg-[#979fb0] text-white p-5 flex items-center justify-center">
+      <div className="w-72 bg-[#292c32] text-white p-5 flex items-center justify-center">
         <h2 className="text-lg text-gray-300">
           Please login to view dashboard
         </h2>
@@ -80,7 +108,7 @@ function Sidebar() {
             <>
             <div className="flex justify-between">
               <span className="text-gray-400">Revenue</span>
-              <span>Rs. {today.Revenue}</span>
+              <span className = "text-green-500">Rs. {today.Revenue}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-400">Orders</span>
@@ -129,7 +157,7 @@ function Sidebar() {
         {(!debt || debt.length === 0) ? (
           <p className="text-sm text-gray-500">No data</p>
         ) : (
-          <div className="space-y-2 max-h-[200px] overflow-y-auto">
+          <div className="space-y-2 max-h-[400px] overflow-y-auto">
 
             {debt.map((cust, i) => (
               <div
@@ -151,8 +179,9 @@ function Sidebar() {
                   {cust.address}
                 </div>
 
-                <div className="text-xs text-gray-500">
-                  {cust.phone_number}
+                <div className="text-xs text-gray-500 flex justify-between">
+                  <span>{cust.phone_number}</span>
+                  <span><button onClick = {() => handleamount(cust.sale_id)} className="bg-green-900 text-white rounded p-1 font-bold hover:bg-green-700">Paid</button></span>
                 </div>
               </div>
             ))}

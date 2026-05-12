@@ -54,10 +54,10 @@ export default function RecommendationDashboard() {
   return (
     <div className="p-6 text-gray-300 bg-[#020617] min-h-screen">
 
-      <h1 className="text-xl mb-4">AI Tile Recommendations</h1>
+      <h1 className="text-xl text-white mb-4">AI Tile Recommendations</h1>
       <div className="bg-[#0f172a] border border-gray-800 rounded-xl p-5 mb-6 font-extralight">
 
-        <h2 className="text-lg text-gray-400 mb-4">
+        <h2 className="text-lg text-white font-medium mb-4">
           Monthly Sales Comparison
         </h2>
 
@@ -97,7 +97,7 @@ export default function RecommendationDashboard() {
         {comparison && (
           <div className="mt-6">
 
-            <div className="text-lg text-gray-500 mb-2">Visual Comparison</div>
+            <div className="text-lg text-white font-medium mb-2">Visual Comparison</div>
 
             <div className="flex items-end gap-6 h-32">
 
@@ -122,7 +122,7 @@ export default function RecommendationDashboard() {
                     maxHeight: "120px"
                   }}
                 ></div>
-                <p className="text-lg mt-1">Previous</p>
+                <p className="text-lg mt-1 ">Previous</p>
               </div>
 
             </div>
@@ -134,10 +134,13 @@ export default function RecommendationDashboard() {
 
           {/* 🔷 TOP CURRENT */}
           <div className="card">
-            <h2 className="text-lg text-gray-400 mb-3">
-              <u>Top Tiles (Current Month)</u>
+            <h2 className="text-lg text-white font-medium mb-3">
+              Top Tiles (Current Month)
+              <hr />
+              <p className="text-white font-light text-sm">List of highest selling tiles in the current month.
+Each tile shows its total sales count</p>
             </h2>
-
+            <hr />
             {comparison.top_tiles_current.length === 0 ? (
               <p className="text-sm text-gray-500">No data</p>
             ) : (
@@ -152,10 +155,13 @@ export default function RecommendationDashboard() {
 
           {/* 🔷 TOP PREVIOUS */}
           <div className="card">
-            <h2 className="text-lg text-gray-400 mb-3">
-              <u>Top Tiles (Previous Month)</u>
+            <h2 className="text-lg text-white font-medium mb-3">
+              Top Tiles (Previous Month)
+              <hr />
+              <p className="text-white font-light text-sm">List of highest selling tiles in the previous month.
+Each tile shows its total sales count</p>
             </h2>
-
+            <hr />
             {comparison.top_tiles_previous.length === 0 ? (
               <p className="text-sm text-gray-500">No data</p>
             ) : (
@@ -172,8 +178,11 @@ export default function RecommendationDashboard() {
           <div className="card">
             <h2 className="text-lg text-green-400 mb-3">
               Trending Up
+              <hr />
+              <p className="text-sm text-white font-light">Tiles with increased sales compared to previous month
+Shows tile name and increase in quantity</p>
             </h2>
-
+            <hr />
             {comparison.trending_up.length === 0 ? (
               <p className="text-sm text-gray-500">No data</p>
             ) : (
@@ -190,8 +199,11 @@ export default function RecommendationDashboard() {
           <div className="card">
             <h2 className="text-lg text-red-400 mb-3">
               Trending Down
+              <hr />
+              <p className="text-white font-light text-sm">Tiles with decreased sales compared to previous month
+Shows tile name and decrease in quantity</p>
             </h2>
-
+            <hr />
             {comparison.trending_down.length === 0 ? (
               <p className="text-sm text-gray-500">No data</p>
             ) : (
@@ -211,7 +223,11 @@ export default function RecommendationDashboard() {
       <div className="bg-[#0f172a] border border-gray-800 rounded-xl p-5 mb-6">
 
         <h2 className="text-sm text-gray-400 mb-4">Run Analysis</h2>
-
+        <hr />
+        <p className="text-sm font-light text-white"><b>Support:</b> How frequently tile combinations appear in sales.</p>
+        <hr />
+        <p className="text-sm font-light text-white"><b>Confidence:</b> Likelihood of buying another tile after selecting one. How likely customer will buy second tile if they bought first tile?</p>
+        <hr />
         <div className="grid grid-cols-3 gap-4 items-center">
 
           <div>

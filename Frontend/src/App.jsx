@@ -8,6 +8,7 @@ import TodayPage from './pages/today';
 import ManualPage from './pages/manual';
 import RecommendationPage from './pages/dashboard';
 import Home from './pages/home';
+import ProfilePage from "./pages/profile"
 import AuthModal from './components/AuthModal';
 
 
@@ -32,6 +33,7 @@ function App() {
               {currentPage == 'login' && (
                 <AuthModal isOpen={true} onClose={() => setCurrentPage("home")} />
               )}
+              {currentPage == 'profile' && <ProfilePage />}
             </div>
           </div>
         </div>
