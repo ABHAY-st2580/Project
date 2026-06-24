@@ -1,4 +1,4 @@
-# 🧱 TileSense – Tile Stock Management System
+# 🧱 TileTracker – Tile Stock Management System
 
 A **desktop-based stock and sales management system** designed for tile shops to efficiently manage inventory, customer transactions, and product demand.  
 The system also integrates **data mining algorithms** to generate useful business insights from sales data.
@@ -49,7 +49,7 @@ The system also integrates **data mining algorithms** to generate useful busines
 ## 🏗 Project Structure
 
 ```
-TileSense/
+TileTracker/
 │
 ├── main.py
 ├── database/
