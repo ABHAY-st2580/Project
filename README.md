@@ -38,6 +38,8 @@ The system also integrates **data mining algorithms** to generate useful busines
 |-----------|------|
 | **Python** | Core programming |
 | **Tkinter / CustomTkinter** | GUI development |
+| **React** | Frontend development |
+| **Django** | Backend development |
 | **MySQL** | Database management |
 | **Pandas** | Data processing |
 | **Matplotlib** | Data visualization |
