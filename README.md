@@ -1,4 +1,4 @@
-# 🧱 TileSense – Tile Stock Management System
+# 🧱 TileTracker – Tile Stock Management System
 
 A **desktop-based stock and sales management system** designed for tile shops to efficiently manage inventory, customer transactions, and product demand.  
 The system also integrates **data mining algorithms** to generate useful business insights from sales data.
@@ -38,6 +38,8 @@ The system also integrates **data mining algorithms** to generate useful busines
 |-----------|------|
 | **Python** | Core programming |
 | **Tkinter / CustomTkinter** | GUI development |
+| **React** | Frontend development |
+| **Django** | Backend development |
 | **MySQL** | Database management |
 | **Pandas** | Data processing |
 | **Matplotlib** | Data visualization |
@@ -49,7 +51,7 @@ The system also integrates **data mining algorithms** to generate useful busines
 ## 🏗 Project Structure
 
 ```
-TileSense/
+TileTracker/
 │
 ├── main.py
 ├── database/
@@ -116,7 +118,11 @@ python main.py
 
 ## 📷 Application Screenshots
 
-<img width="1919" height="1129" alt="image" src="https://github.com/user-attachments/assets/f7c21349-802b-4d20-824a-26b631d37792" />
+<!-- <img width="1919" height="1129" alt="image" src="https://github.com/user-attachments/assets/f7c21349-802b-4d20-824a-26b631d37792" /> -->
+<img width="959" height="500" alt="image" src="https://github.com/user-attachments/assets/0cbed8aa-0726-496b-b850-32a913a9028c" />
+<img width="959" height="499" alt="image" src="https://github.com/user-attachments/assets/91493038-6c1d-4247-a378-cc3e7d4a7aa3" />
+
+
 
 
 ---
