@@ -17,7 +17,6 @@ function AuthModal({ isOpen, onClose }) {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // 🔥 REGISTER
   const handleRegister = async () => {
     try {
       await axios.post("http://127.0.0.1:8000/auth/register/", form);

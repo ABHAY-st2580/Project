@@ -28,5 +28,4 @@ urlpatterns = [
     path('sale/', include('Sale.urls'), name='sale'),
     path('insights/', include('Insights.urls'), name = 'insights'),
     path('auth/', include('auth_api.urls'), name = 'auth'),
-    
 ]
