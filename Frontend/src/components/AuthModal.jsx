@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 
+const API_URL = import.meta.env.VITE_API_URL;
 function AuthModal({ isOpen, onClose }) {
   const [isLogin, setIsLogin] = useState(true);
     const [form, setForm] = useState({
@@ -19,7 +20,7 @@ function AuthModal({ isOpen, onClose }) {
 
   const handleRegister = async () => {
     try {
-      await axios.post("http://127.0.0.1:8000/auth/register/", form);
+      await axios.post(`${API_URL}/auth/register/`, form);
       alert("Registered Successfully");
       setIsLogin(true);
     } catch (err) {
@@ -30,7 +31,7 @@ function AuthModal({ isOpen, onClose }) {
 
   const handleLogin = async () => {
     try {
-      const res = await axios.post("http://127.0.0.1:8000/auth/login/", {
+      const res = await axios.post(`${API_URL}/auth/login/`, {
         username: form.username,
         password: form.password,
       });

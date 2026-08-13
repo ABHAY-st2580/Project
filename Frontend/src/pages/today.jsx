@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 
+const API_URL = import.meta.env.VITE_API_URL;
 export default function TodayPage() {
   const [selectedSale, setSelectedSale] = useState(null);
   const [today, setToday] = useState([]);
@@ -7,8 +8,9 @@ export default function TodayPage() {
   const token = localStorage.getItem("token");
 
   const fetchToday = async () => {
+    if(!token) return;
     try {
-      const res = await fetch("http://127.0.0.1:8000/insights/today/", {
+      const res = await fetch(`${API_URL}/insights/today/`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,

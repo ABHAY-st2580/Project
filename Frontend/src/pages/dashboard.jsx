@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export default function RecommendationDashboard() {
   const [comparison, setComparison] = useState(null);
   const [rules, setRules] = useState([]);
@@ -9,35 +11,47 @@ export default function RecommendationDashboard() {
   const token = localStorage.getItem("token");
 
   const fetchComparison = async () => {
-    const res = await fetch("http://127.0.0.1:8000/insights/sales-comparison/", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+    if(!token) return;
+    try {
+      const res = await fetch(`${API_URL}/insights/sales-comparison/`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
     });
 
-    const data = await res.json();
-    setComparison(data);
+      const data = await res.json();
+      setComparison(data);
+    } catch (err) {
+      console.error(err);
+    }
   };
-    useEffect(() => {
-      fetchComparison();
-    }, []);
+
+  useEffect(() => {
+    fetchComparison();
+  }, []);
+
   const runAnalysis = async () => {
-    const res = await fetch("http://127.0.0.1:8000/insights/dash/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        min_support: support,
+    if(!token) return;
+    try {
+      const res = await fetch(`${API_URL}/insights/dash/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          min_support: support,
         min_confidence: confidence,
       }),
     });
 
-    const data = await res.json();
-    console.log("API RESPONSE:", data);
-    setRules(data.rules || []);
+      const data = await res.json();
+      console.log("API RESPONSE:", data);
+      setRules(data.rules || []);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const maxConfidence = Math.max(...rules.map(r => r.confidence || 0), 0);

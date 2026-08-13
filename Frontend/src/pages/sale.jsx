@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+const API_URL = import.meta.env.VITE_API_URL;
 function SalePage() {
   const [recentSales, setRecentSales] = useState([
   ]);
@@ -80,9 +81,9 @@ function SalePage() {
 
     try {
       const token = localStorage.getItem("token");
-
+      if(!token) return;
       await axios.post(
-        "http://127.0.0.1:8000/sale/add_sale/",
+        `${API_URL}/sale/add_sale/`,
         payload,
         {
           headers: {
@@ -113,9 +114,9 @@ function SalePage() {
     const fetchSales = async () => {
       try {
         const token = localStorage.getItem("token");
-
+        if(!token) return;
         const res = await axios.get(
-          "http://127.0.0.1:8000/sale/get_sales/",
+          `${API_URL}/sale/get_sales/`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

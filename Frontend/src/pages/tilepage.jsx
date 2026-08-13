@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 
+const API_URL = import.meta.env.VITE_API_URL;
 export default function TilesPage() {
   const [form, setForm] = useState({
     tile_type: "",
@@ -28,7 +29,8 @@ export default function TilesPage() {
   };
 
   const fetchTiles = async () => {
-    const res = await fetch("http://127.0.0.1:8000/tiles/get_tile", {
+    if(!token) return;
+    const res = await fetch(`${API_URL}/tiles/get_tile`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = await res.json();
@@ -36,7 +38,8 @@ export default function TilesPage() {
   };
 
   const handleSubmit = async () => {
-    const res = await fetch("http://127.0.0.1:8000/tiles/add_tile/", {
+    if(!token) return;
+    const res = await fetch(`${API_URL}/tiles/add_tile/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -52,7 +55,8 @@ export default function TilesPage() {
   };
 
   const handleSearch = async () => {
-    const res = await fetch("http://127.0.0.1:8000/tiles/get_tile/", {
+    if(!token) return;
+    const res = await fetch(`${API_URL}/tiles/get_tile/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

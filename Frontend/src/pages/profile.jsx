@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export default function ProfilePage() {
   const [profile, setProfile] = useState(null);
   const token = localStorage.getItem("token");
@@ -7,7 +9,8 @@ export default function ProfilePage() {
 
   const fetchProfile = async () => {
     try {
-      const res = await fetch("http://127.0.0.1:8000/auth/profile/", {
+      if(!token) return;
+      const res = await fetch(`${API_URL}/auth/profile/`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

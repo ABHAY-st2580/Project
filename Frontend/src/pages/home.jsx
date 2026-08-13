@@ -2,10 +2,11 @@ import React from "react";
 import tileImg from "../assets/tileimage2.jpg";
 import bgImg from "../assets/tileimage3.jpg";
 
+const API_URL = import.meta.env.VITE_API_URL;
 
 function Home({ setCurrentPage }) {
   const token = localStorage.getItem("token");
-
+  
   return (
     <div className="text-white font-light">
 

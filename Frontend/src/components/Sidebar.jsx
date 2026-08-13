@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import React from "react";
 
+const API_URL = import.meta.env.VITE_API_URL;
 function Sidebar() {
   const [alerts, setalerts] = useState(null);
   const [today, settoday] = useState(null);
@@ -10,9 +11,10 @@ function Sidebar() {
 
   const token = localStorage.getItem("token")
   const handleamount = async (saleId) => {
+    if(!token) return;
     try {
       const res = await fetch(
-        `http://127.0.0.1:8000/insights/pay-debt/${saleId}`,
+        `${API_URL}/insights/pay-debt/${saleId}`,
         {
           method: "POST",
           headers: {
@@ -39,7 +41,9 @@ function Sidebar() {
   };
 
   const fetchtoday = async () => {
-    const res = await fetch("http://127.0.0.1:8000/insights/today/", {
+    if(!token) return;
+    try{
+      const res = await fetch(`${API_URL}/insights/today/`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -48,38 +52,51 @@ function Sidebar() {
 
     const data = await res.json();
     settoday(data);
-  };
+  } catch (err) {
+    console.error(err);
+  }
+};
   useEffect(() => {
       fetchtoday();
     }, []);
 
   const fetchdebt = async () => {
-    const res = await fetch("http://127.0.0.1:8000/insights/debt/", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    if(!token) return;
+    try {
+      const res = await fetch(`${API_URL}/insights/debt/`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-    const data = await res.json();
-    console.log(data.debt);
-    setdebt(data.debt);
+      const data = await res.json();
+      console.log(data.debt);
+      setdebt(data.debt);
+    } catch (err) {
+      console.error(err);
+    }
   };
   useEffect(() => {
     fetchdebt();
   }, []);
 
   const fetchalerts = async () => {
-    const res = await fetch("http://127.0.0.1:8000/insights/inventory-alerts/", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    if(!token) return;
+    try {
+      const res = await fetch(`${API_URL}/insights/inventory-alerts/`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-    const data = await res.json();
-    console.log(data)
-    setalerts(data.inventory_alerts);
+      const data = await res.json();
+      console.log(data)
+      setalerts(data.inventory_alerts);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   useEffect(() => {
