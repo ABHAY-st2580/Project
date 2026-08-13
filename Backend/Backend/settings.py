@@ -79,7 +79,7 @@ MIDDLEWARE = [
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
-    # "https://your-project.vercel.app",
+    "https://tiletracker.onrender.com",
 ]
 
 ROOT_URLCONF = 'Backend.urls'
